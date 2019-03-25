@@ -18,4 +18,6 @@ public class Money {
     private String type;
     @ManyToOne(targetEntity = Category.class)
     private Category category;
+    @ManyToOne(targetEntity = User.class)
+    private User owner;
 }
