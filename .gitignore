@@ -27,3 +27,44 @@ HELP.md
 
 ### VS Code ###
 .vscode/
+
+# compiled output
+/dist
+/tmp
+/out-tsc
+
+# dependencies
+/node_modules
+
+# IDEs and editors
+/front/.idea
+/front/.project
+/front/.classpath
+/front/.c9/
+/front/*.launch
+/front/.settings/
+/front/*.sublime-workspace
+
+# IDE - VSCode
+/front/.vscode/*
+!/front/.vscode/settings.json
+!/front/.vscode/tasks.json
+!/front/.vscode/launch.json
+!/front/.vscode/extensions.json
+
+# misc
+/front/.sass-cache
+/front/connect.lock
+/front/coverage
+/front/libpeerconnection.log
+/front/npm-debug.log
+/front/testem.log
+/front/typings
+
+# e2e
+/front/e2e/*.js
+/front/e2e/*.map
+
+# System Files
+/front/.DS_Store
+/front/Thumbs.db
