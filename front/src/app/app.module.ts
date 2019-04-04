@@ -4,27 +4,30 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { NavComponent } from './components/nav/nav.component';
 import { FooterComponent } from './components/footer/footer.component';
-import { LoginComponent } from './pages/login/login.component';
-import { RegisterComponent } from './pages/register/register.component';
 import { StatisticsComponent } from './pages/statistics/statistics.component';
 import { EventsComponent } from './pages/events/events.component';
 import { EventComponent } from './pages/event/event.component';
 import { SettingsComponent } from './pages/settings/settings.component';
-
+import { HomeComponent } from './pages/home/home.component';
+import {AppRoutingModule} from './app-routing/app-routing.module';
+import { YearChartComponent } from './components/year-chart/year-chart.component';
+import { ChartsModule } from 'ng2-charts';
 @NgModule({
   declarations: [
     AppComponent,
     NavComponent,
     FooterComponent,
-    LoginComponent,
-    RegisterComponent,
     StatisticsComponent,
     EventsComponent,
     EventComponent,
-    SettingsComponent
+    SettingsComponent,
+    HomeComponent,
+    YearChartComponent
   ],
   imports: [
-    BrowserModule
+    AppRoutingModule,
+    BrowserModule,
+    ChartsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

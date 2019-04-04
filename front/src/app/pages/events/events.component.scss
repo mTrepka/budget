@@ -1,0 +1,16 @@
+table {
+  width: 90%;
+  margin: auto;
+  border-collapse: collapse;
+  border-style: hidden;
+
+  tr {
+    border: 2px solid white;
+  }
+  tr:nth-child(2n){
+    background: #beef00;
+  }
+  tr:nth-child(2n+1){
+    background: #c9f600;
+  }
+}
