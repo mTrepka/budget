@@ -16,5 +16,5 @@ public class Category {
     private int categoryId;
     private String name;
     @OneToMany(mappedBy = "category")
-    private List<Money> moneyList;
+    private List<Event> eventList;
 }

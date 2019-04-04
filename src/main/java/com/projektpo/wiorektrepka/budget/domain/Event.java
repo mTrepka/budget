@@ -10,7 +10,7 @@ import javax.persistence.ManyToOne;
 
 @Entity
 @Data
-public class Money {
+public class Event {
     @GeneratedValue
     @Id
     private int moneyId;
