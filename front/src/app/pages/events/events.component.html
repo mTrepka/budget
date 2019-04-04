@@ -1,3 +1,38 @@
-<p>
-  events works!
-</p>
+<table>
+  <caption><h1>Ostatni tydzień</h1></caption>
+  <tr>
+    <th>Nazwa</th>
+    <th>Typ</th>
+    <th>Kategoria</th>
+    <th>Kwota</th>
+    <th>Data</th>
+  </tr>
+  <tr *ngFor="let event of weekEvents">
+    <th>{{event.mName}}</th>
+    <th>{{event.type}}</th>
+    <th>{{event.category.name}}</th>
+    <th>{{event.value}}</th>
+    <th>{{event.data}}</th>
+  </tr>
+
+</table>
+
+  <table>
+    <caption><h1>Ostatni miesiąc</h1></caption>
+  <tr>
+    <th>Nazwa</th>
+    <th>Typ</th>
+    <th>Kategoria</th>
+    <th>Kwota</th>
+    <th>Data</th>
+  </tr>
+  <tr *ngFor="let event of monthEvents">
+    <th>{{event.mName}}</th>
+    <th>{{event.type}}</th>
+    <th>{{event.category.name}}</th>
+    <th>{{event.value}}</th>
+    <th>{{event.data}}</th>
+  </tr>
+
+</table>
+
