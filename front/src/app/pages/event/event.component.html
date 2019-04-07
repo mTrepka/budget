@@ -1,11 +1,37 @@
-<form>
-  <div class="form-group">
-    <label for="name">Name</label>
-    <input type="text" class="form-control" id="name" required>
-  </div>
-  <div class="form-group">
-    <label for="name">Name</label>
-    <input type="text" class="form-control" id="name" required>
-  </div>
-  <button type="submit">Submit</button>
-</form>
+<article>
+<div class="example-container">
+  <mat-form-field class="form-item">
+    <input matInput placeholder="Nazwa" [(ngModel)]="event.mName">
+  </mat-form-field>
+</div>
+<mat-radio-group
+  aria-labelledby="example-radio-group-label"
+  class="radio-group form-item"
+  [(ngModel)]="event.type">
+  <mat-radio-button class="radio-button" *ngFor="let type of types" [value]="type">
+    {{type}}
+  </mat-radio-button>
+</mat-radio-group>
+
+<mat-form-field class="form-item">
+  <mat-label>Wybierz kategorie</mat-label>
+  <mat-select [(value)]="event.category.categoryId">
+    <mat-option>None</mat-option>
+    <mat-option value="option1" *ngFor="let category of categories" [value]="category.categoryId">{{category.name}}</mat-option>
+
+  </mat-select>
+</mat-form-field>
+<mat-form-field class="form-item">
+  <input matInput placeholder="Wartość" [(ngModel)]="event.value">
+</mat-form-field>
+
+<mat-form-field >
+  <input matInput [matDatepicker]="picker1" placeholder="Data wydarzenia" [formControl]="date" [(ngModel)]="event.eventDate" >
+  <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+  <mat-datepicker #picker1></mat-datepicker>
+</mat-form-field>
+
+<br/>
+
+  <button (click)="send()" mat-button>Wyslij</button>
+</article>

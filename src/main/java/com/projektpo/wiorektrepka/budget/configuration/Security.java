@@ -18,7 +18,13 @@ public class Security extends WebSecurityConfigurerAdapter {
 
         http.
                 authorizeRequests()
-                .antMatchers("/*").permitAll()
+                .antMatchers("/**").permitAll()
+                .anyRequest()
+                .authenticated().and().csrf().disable().formLogin()
+                .loginPage("/login").failureUrl("/login?error=true")
+                .defaultSuccessUrl("/",true)
+                .usernameParameter("username")
+                .passwordParameter("password")
                 .and().logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                 .logoutSuccessUrl("/").and().exceptionHandling()

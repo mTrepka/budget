@@ -2,11 +2,10 @@ package com.projektpo.wiorektrepka.budget.domain;
 
 
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
+import java.time.LocalDate;
 
 @Entity
 @Data
@@ -16,8 +15,12 @@ public class Event {
     private int moneyId;
     private String mName;
     private String type;
-    @ManyToOne(targetEntity = Category.class)
+    @ManyToOne(fetch = FetchType.EAGER)
     private Category category;
-    @ManyToOne(targetEntity = User.class)
+    private LocalDate eventDate;
+    @CreationTimestamp
+    private LocalDate creationDate;
+    private int value;
+    @ManyToOne(targetEntity = User.class,fetch = FetchType.EAGER)
     private User owner;
 }

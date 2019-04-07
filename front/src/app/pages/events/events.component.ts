@@ -10,15 +10,16 @@ import {EventService} from 'src/app/service/event.service';
 
 
 export class EventsComponent implements OnInit {
-  weekEvents: any;
-  monthEvents: any;
+  weekEvents;
+  monthEvents;
 
   constructor(private eventService: EventService) { }
 
   ngOnInit() {
-    console.log(this.eventService.EXAMPLE_DATA)
-    this.weekEvents = this.eventService.EXAMPLE_DATA;
-    this.monthEvents = this.eventService.EXAMPLE_DATA;
+    this.eventService.getEvents().subscribe(e => {
+      this.weekEvents = e;
+      this.monthEvents = e;
+    });
   }
 
 }

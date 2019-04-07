@@ -6,9 +6,10 @@ import com.projektpo.wiorektrepka.budget.repository.EventRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
-@Service("moneyService")
+@Service("eventService")
 @RequiredArgsConstructor
 public class EventServiceImpl implements EventService {
     private final EventRepository eventRepository;
@@ -20,25 +21,31 @@ public class EventServiceImpl implements EventService {
         Optional<Event> o = eventRepository.findById(id);
         if (checkUserEvent(o, id)) {
             Event m = o.get();
-            if (m.getOwner().getUName().equals(userService.getCurrentUserNick()))
+            if (m.getOwner().getUName().equals(userService.getCurrentUser().getUName()))
                 return m;
         }
         return null;
     }
 
     @Override
-    public void addNewEvent(String name, String type, Integer categoryId) {
-        Event m = generateEvent(name, type, categoryId);
+    public void addNewEvent(Event event) {
+        Event m = generateEventFromBody(event);
         m.setOwner(userService.getCurrentUser());
-        eventRepository.save(m);
+        eventRepository.saveAndFlush(m);
     }
 
     @Override
-    public Event generateEvent(String name, String type, Integer categoryId) {
+    public List<Event> getEventsBetweenDateCurrentUser(String startDate, String endDate) {
+        eventRepository.findEventsByOwnerWhereEventDateBetween(userService.getCurrentUser(),startDate,endDate);
+        return null;
+    }
+    private Event generateEventFromBody(Event event) {
         Event m = new Event();
-        m.setMName(name);
-        m.setType(type);
-        m.setCategory(categoryRepository.getOne(categoryId));
+        m.setMName(event.getMName());
+        m.setType(event.getType());
+        m.setValue(event.getValue());
+        m.setCategory(categoryRepository.getOne(event.getCategory().getCategoryId()));
+        m.setEventDate(event.getEventDate());
         return m;
     }
 
@@ -50,7 +57,7 @@ public class EventServiceImpl implements EventService {
             m.setMName(name);
             m.setType(type);
             m.setCategory(categoryRepository.getOne(categoryId));
-            eventRepository.save(m);
+            eventRepository.saveAndFlush(m);
         }
     }
 
@@ -58,8 +65,7 @@ public class EventServiceImpl implements EventService {
     public void deleteEvent(Integer id) {
         Optional<Event> o = eventRepository.findById(id);
         if (checkUserEvent(o, id)) {
-            Event m = o.get();
-            eventRepository.delete(m);
+            eventRepository.deleteById(id);
         }
     }
 
