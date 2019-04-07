@@ -31,9 +31,13 @@ public class Rest {
             events = eventService.getEventsBetweenDateCurrentUser(startDate,endDate);
         else
             events = userService.getCurrentUser().getEventList();
-        events.forEach(e -> {e.getCategory().setEventList(null);e.setOwner(null);});
+
         if(category==null)
-        return events;
+        {
+            events.forEach(e -> {e.getCategory().setEventList(null);e.setOwner(null);});
+            return events;
+        }
+        events.forEach(e -> e.setOwner(null));
         return events.stream().filter(e -> e.getCategory().getName().equals(category)).collect(Collectors.toList());
     }
 
