@@ -1,15 +1,18 @@
 package com.projektpo.wiorektrepka.budget.configuration;
 
 
+import com.projektpo.wiorektrepka.budget.domain.Category;
 import com.projektpo.wiorektrepka.budget.domain.Event;
+import com.projektpo.wiorektrepka.budget.service.CategoryService;
 import com.projektpo.wiorektrepka.budget.service.EventService;
 import com.projektpo.wiorektrepka.budget.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import java.sql.Time;
+import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,32 +20,48 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class Rest {
     private final UserService userService;
-    private final EventService moneyService;
+    private final EventService eventService;
+    private final CategoryService categoryService;
 
 
     @GetMapping("/event/")
-    public List<Event> getUserMoney(String category){
-        List<Event> events = userService.getCurrentUser().getEventList();
+    public List<Event> getUserEvent(String category, String startDate, String endDate){
+        List<Event> events;
+        if(startDate!=null&&endDate!=null&&!startDate.equals(endDate))
+            events = eventService.getEventsBetweenDateCurrentUser(startDate,endDate);
+        else
+            events = userService.getCurrentUser().getEventList();
+
         if(category==null)
-        return events;
+        {
+            events.forEach(e -> {e.getCategory().setEventList(null);e.setOwner(null);});
+            return events;
+        }
+        events.forEach(e -> e.setOwner(null));
         return events.stream().filter(e -> e.getCategory().getName().equals(category)).collect(Collectors.toList());
     }
 
     @GetMapping("/event/{id}")
-    public Event getUserMoneyById(@PathVariable("id") Integer id){
-        return moneyService.getUserEventById(id);
+    public Event getUserEventById(@PathVariable("id") Integer id){
+        return eventService.getUserEventById(id);
     }
 
     @PostMapping("/event/")
-    public void addNewMoney(String name,String type,Integer categoryId){
-        moneyService.addNewEvent(name,type,categoryId);
+    public void addNewEvent(@RequestBody Event event){
+        eventService.addNewEvent(event);
     }
+
     @PostMapping("/event/edit/{id}")
-    public void editMoney(@PathVariable("id") Integer id, String name,String type,Integer categoryId){
-        moneyService.editEvent(id,name,type,categoryId);
+    public void editEvent(@PathVariable("id") Integer id, String name,String type,Integer categoryId){
+        eventService.editEvent(id,name,type,categoryId);
     }
     @PostMapping("/event/delete/{id}")
-    public void deleteMoney(@PathVariable("id") Integer id){
-        moneyService.deleteEvent(id);
+    public void deleteEvent(@PathVariable("id") Integer id){
+        eventService.deleteEvent(id);
+    }
+
+    @GetMapping("/category")
+    public List<Category> getAllCategory(){
+        return categoryService.getAll();
     }
 }

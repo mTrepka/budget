@@ -6,4 +6,6 @@ public interface UserService {
     User getCurrentUser();
 
     String getCurrentUserNick();
+
+    User findUserByNick(String username);
 }

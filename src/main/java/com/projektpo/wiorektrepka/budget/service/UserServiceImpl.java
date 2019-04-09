@@ -13,7 +13,8 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public User getCurrentUser() {
-        return findUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+        //return findUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+        return findUserByUsername("user");
     }
 
     @Override
@@ -23,5 +24,10 @@ public class UserServiceImpl implements UserService{
 
     private User findUserByUsername(String name) {
         return userRepository.findUserByUsername(name);
+    }
+
+    @Override
+    public User findUserByNick(String username) {
+        return userRepository.findUserByUsername(username);
     }
 }
