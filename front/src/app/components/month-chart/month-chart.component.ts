@@ -3,18 +3,17 @@ import {ChartDataSets, ChartOptions} from 'chart.js';
 import {BaseChartDirective, Label} from 'ng2-charts';
 import * as pluginAnnotations from 'chartjs-plugin-annotation';
 import {EventService} from '../../service/event.service';
-
+import {range} from 'rxjs';
 
 @Component({
-  selector: 'app-year-chart',
-  templateUrl: './year-chart.component.html',
-  styleUrls: ['./year-chart.component.scss']
+  selector: 'app-month-chart',
+  templateUrl: './month-chart.component.html',
+  styleUrls: ['./month-chart.component.scss']
 })
-export class YearChartComponent implements OnInit {
+export class MonthChartComponent implements OnInit {
   events = Event[''];
-  months = ['Styczeń', 'Luty', 'Marzec', 'Kwiecień', 'Maj', 'Czerwiec', 'Lipiec', 'Sierpień', 'Wrzesien', 'Pazdziernik', 'Listopad', 'Grudzien'];
   public lineChartData: ChartDataSets[];
-  public lineChartLabels: Label[] = this.months;
+  public lineChartLabels: Label[] = [];
   public lineChartOptions: (ChartOptions & { annotation: any }) = {
     responsive: true,
     scales: {
@@ -27,8 +26,7 @@ export class YearChartComponent implements OnInit {
         }
       ]
     },
-    annotation: {
-    },
+    annotation: {},
   };
   public lineChartLegend = true;
   public lineChartType = 'bar';
@@ -46,25 +44,26 @@ export class YearChartComponent implements OnInit {
     let wyd = [];
     let prz = [];
     wyd[0] = 0;
-    let startDate = a.getFullYear() + '-' + 1 + '-' + 1;
-    let endDate = (a.getFullYear()) + '-' + 12 + '-' + 31;
-
+    let startDate = a.getFullYear() + '-' + (a.getMonth() + 1) + '-' + 1;
+    let endDate = a.getFullYear() + '-' + (a.getMonth() + 1) + '-' + a.getDate();
     this.eventService.getEventsByDate(startDate, endDate).subscribe(e =>
       e.forEach(b => {
         const d = new Date(b.eventDate);
-        if (prz[d.getMonth()] == undefined) {
-          prz[d.getMonth()] = 0;
+        if (prz[d.getDate()] == undefined) {
+          prz[d.getDate()] = 0;
         }
-        if (wyd[d.getMonth()] == undefined) {
-          wyd[d.getMonth()] = 0;
+        if (wyd[d.getDate()] == undefined) {
+          wyd[d.getDate()] = 0;
         }
         if (b.type == 'wyd') {
-          wyd[d.getMonth()] += b.value;
+          wyd[d.getDate()] = b.value;
         } else {
-          prz[d.getMonth()] += b.value;
+          prz[d.getDate()] = b.value;
         }
       })
     );
+
+    range(1, today).subscribe(b => this.lineChartLabels.push(b + ''));
     this.lineChartData = [
       {data: wyd, label: 'Wydatki'},
       {data: prz, label: 'Przychody'},
@@ -72,9 +71,11 @@ export class YearChartComponent implements OnInit {
   }
 
   // events
-  public chartClicked({ event, active }: { event: MouseEvent, active: {}[] }): void {
+  public chartClicked({event, active}: { event: MouseEvent, active: {}[] }): void {
+    console.log(event, active);
   }
 
-  public chartHovered({ event, active }: { event: MouseEvent, active: {}[] }): void {
+  public chartHovered({event, active}: { event: MouseEvent, active: {}[] }): void {
+    console.log(event, active);
   }
 }

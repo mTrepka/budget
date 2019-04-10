@@ -16,7 +16,7 @@ public class Event {
     @GeneratedValue
     @Id
     private int moneyId;
-    private String mName;
+    private String evName;
     private String type;
     @ManyToOne(fetch = FetchType.EAGER)
     private Category category;

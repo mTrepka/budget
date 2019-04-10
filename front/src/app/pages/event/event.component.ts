@@ -9,7 +9,7 @@ import {FormControl} from '@angular/forms';
   styleUrls: ['./event.component.scss']
 })
 export class EventComponent implements OnInit {
-  types = ['wydatek', 'przchod'];
+  types = ['wyd', 'prz'];
   categories: any;
   event: Event;
 
@@ -20,7 +20,7 @@ export class EventComponent implements OnInit {
 
   ngOnInit() {
     this.event = {
-      mName: '',
+      evName: '',
       moneyId : 0,
       type: '',
       value: 0,

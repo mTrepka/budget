@@ -7,8 +7,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
-import java.sql.Timestamp;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,7 +41,8 @@ public class EventServiceImpl implements EventService {
     }
     private Event generateEventFromBody(Event event) {
         Event m = new Event();
-        m.setMName(event.getMName());
+        m.setEvName(event.getEvName());
+        System.out.println(m.getEvName());
         m.setType(event.getType());
         m.setValue(event.getValue());
         m.setCategory(categoryRepository.getOne(event.getCategory().getCategoryId()));
@@ -56,7 +55,7 @@ public class EventServiceImpl implements EventService {
         Optional<Event> o = eventRepository.findById(id);
         if (checkUserEvent(o, id)) {
             Event m = o.get();
-            m.setMName(name);
+            m.setEvName(name);
             m.setType(type);
             m.setCategory(categoryRepository.getOne(categoryId));
             eventRepository.saveAndFlush(m);

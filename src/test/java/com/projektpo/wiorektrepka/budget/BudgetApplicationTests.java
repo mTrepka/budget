@@ -1,12 +1,8 @@
 package com.projektpo.wiorektrepka.budget;
 
 import com.projektpo.wiorektrepka.budget.configuration.Rest;
-import com.projektpo.wiorektrepka.budget.domain.Category;
 import com.projektpo.wiorektrepka.budget.domain.Event;
-import com.projektpo.wiorektrepka.budget.repository.CategoryRepository;
 import com.projektpo.wiorektrepka.budget.repository.EventRepository;
-import com.projektpo.wiorektrepka.budget.service.CategoryService;
-import com.projektpo.wiorektrepka.budget.service.EventService;
 import com.projektpo.wiorektrepka.budget.service.UserService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,8 +11,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.transaction.Transactional;
-
-import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -39,18 +33,18 @@ public class BudgetApplicationTests {
         assertTrue(eventRepository.findAll().isEmpty());
         //rest.addNewEvent("one","two",1);
         Event e = eventRepository.getOne(1);
-        assertEquals(e.getMName(),"one");
+        assertEquals(e.getEvName(),"one");
         assertEquals(e.getType(),"two");
         assertEquals(e.getCategory().getCategoryId(),1);
 
         rest.editEvent(1,"two","one",2);
         e = eventRepository.getOne(1);
-        assertEquals(e.getMName(),"two");
+        assertEquals(e.getEvName(),"two");
         assertEquals(e.getType(),"one");
         assertEquals(e.getCategory().getCategoryId(),2);
 
         Event b = rest.getUserEventById(1);
-        assertEquals(b.getMName(),"two");
+        assertEquals(b.getEvName(),"two");
         assertEquals(b.getType(),"one");
         assertEquals(b.getCategory().getCategoryId(),2);
 //        assertTrue(rest.getUserEvent("kategoria1").isEmpty());
