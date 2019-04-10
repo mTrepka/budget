@@ -6,6 +6,9 @@ import com.projektpo.wiorektrepka.budget.repository.EventRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
+import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,8 +39,7 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public List<Event> getEventsBetweenDateCurrentUser(String startDate, String endDate) {
-        eventRepository.findEventsByOwnerWhereEventDateBetween(userService.getCurrentUser(),startDate,endDate);
-        return null;
+        return eventRepository.findAllByEventDateBetweenAndOwner(Date.valueOf(startDate),Date.valueOf(endDate),userService.getCurrentUser());
     }
     private Event generateEventFromBody(Event event) {
         Event m = new Event();
@@ -45,7 +47,7 @@ public class EventServiceImpl implements EventService {
         m.setType(event.getType());
         m.setValue(event.getValue());
         m.setCategory(categoryRepository.getOne(event.getCategory().getCategoryId()));
-        m.setEventDate(event.getEventDate());
+        m.setEventDate(Date.valueOf(event.getEventDate().toLocalDate().plusDays(1)));
         return m;
     }
 
