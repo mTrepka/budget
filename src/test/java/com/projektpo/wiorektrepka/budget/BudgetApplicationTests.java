@@ -1,33 +1,31 @@
 package com.projektpo.wiorektrepka.budget;
 
-<<<<<<< HEAD
-=======
 import com.projektpo.wiorektrepka.budget.configuration.Rest;
 import com.projektpo.wiorektrepka.budget.domain.Event;
 import com.projektpo.wiorektrepka.budget.repository.EventRepository;
 import com.projektpo.wiorektrepka.budget.service.UserService;
->>>>>>> 106066468205e1d7d8eba1f67ab92ec7cc0e6003
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-<<<<<<< HEAD
-=======
 import javax.transaction.Transactional;
 
 import static org.junit.Assert.*;
 
->>>>>>> 106066468205e1d7d8eba1f67ab92ec7cc0e6003
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class BudgetApplicationTests {
+    @Autowired
+    private Rest rest;
+    @Autowired
+    private EventRepository eventRepository;
+    @Autowired
+    private UserService userService;
 
-	@Test
-	public void contextLoads() {
-<<<<<<< HEAD
-	}
-=======
+    @Test
+    public void contextLoads() {
     }
     @Test
     @Transactional
@@ -56,6 +54,5 @@ public class BudgetApplicationTests {
         rest.deleteEvent(1);
         assertNull(rest.getUserEventById(1));
     }
->>>>>>> 106066468205e1d7d8eba1f67ab92ec7cc0e6003
 
 }

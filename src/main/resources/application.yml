@@ -1,8 +1,8 @@
 spring:
   datasource:
     url: jdbc:mysql://localhost:3306/budget?autoReconnect=true&useSSL=true&serverTimezone=UTC
-    username: root
-    password:
+    username: user
+    password: user
     testWhileIdle: true
     validationQuery: SELECT 1
   jpa:
