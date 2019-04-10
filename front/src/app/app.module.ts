@@ -16,16 +16,20 @@ import {MatRadioModule} from '@angular/material/radio';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {
   MatButtonModule,
+  MatButtonToggleModule,
+  MatDatepickerModule,
   MatFormFieldModule,
   MatInputModule,
-  MatSelectModule,
-  MatTableModule,
+  MatNativeDateModule,
   MatPaginatorModule,
-  MatSortModule, MatButtonToggleModule,
-  MatDatepickerModule, MatNativeDateModule
+  MatSelectModule,
+  MatSortModule,
+  MatTableModule
 } from '@angular/material';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {HttpClientModule} from '@angular/common/http';
+import {MonthChartComponent} from './components/month-chart/month-chart.component';
+import {WeekChartComponent} from './components/week-chart/week-chart.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +41,9 @@ import {HttpClientModule} from '@angular/common/http';
     EventComponent,
     SettingsComponent,
     HomeComponent,
-    YearChartComponent
+    YearChartComponent,
+    MonthChartComponent,
+    WeekChartComponent
   ],
   imports: [
     MatRadioModule,

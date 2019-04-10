@@ -6,10 +6,15 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Date;
+import java.sql.Time;
+import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.List;
 
 @Repository("eventRepository")
 public interface EventRepository extends JpaRepository<Event,Integer> {
-    @Query("select e from Event e  where e.owner = ?0 and e.eventDate between ?1 and ?2")
-    List<Event> findEventsByOwnerWhereEventDateBetween(User currentUser, String startDate, String endDate);
+
+    List<Event> findAllByEventDateBetweenAndOwner(Date startDate, Date endDate, User user);
 }
+

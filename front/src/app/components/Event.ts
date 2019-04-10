@@ -1,9 +1,9 @@
 export interface Event {
   moneyId: number;
-  mName: string;
+  evName: string;
   type: string;
   value: number;
-  eventDate: any;
+  eventDate: string;
   creationDate: any;
   category: {
     categoryId: number;
