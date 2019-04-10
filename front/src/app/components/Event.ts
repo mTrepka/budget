@@ -8,5 +8,5 @@ export interface Event {
   category: {
     categoryId: number;
     name: string;
-};
+  };
 }

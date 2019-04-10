@@ -64,4 +64,20 @@ public class Rest {
     public List<Category> getAllCategory(){
         return categoryService.getAll();
     }
+
+    @PostMapping("/category/delete/{id}")
+    public void deleteCategory(@PathVariable("id") Integer id){
+        categoryService.deleteCategory(id);
+    }
+
+    @PostMapping("/category/edit/{id}")
+    public void editCategory(@PathVariable("id") Integer id, String name){
+        categoryService.editCategory(id, name);
+    }
+
+    @PostMapping("/category/add")
+    public void addCategory(@RequestBody Category category){
+        categoryService.addNewCategory(category);
+    }
+
 }

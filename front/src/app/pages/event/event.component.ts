@@ -1,11 +1,7 @@
-<<<<<<< HEAD
-import { Component, OnInit } from '@angular/core';
-=======
 import {Component, OnInit} from '@angular/core';
 import {EventService} from '../../service/event.service';
 import {Event} from '../../components/Event';
 import {FormControl} from '@angular/forms';
->>>>>>> origin/master
 
 @Component({
   selector: 'app-event',
@@ -13,15 +9,7 @@ import {FormControl} from '@angular/forms';
   styleUrls: ['./event.component.scss']
 })
 export class EventComponent implements OnInit {
-<<<<<<< HEAD
-
-  constructor() { }
-
-  ngOnInit() {
-  }
-
-=======
-  types = ['wydatek', 'przchod'];
+  types = ['wydatek', 'przychod'];
   categories: any;
   event: Event;
 
@@ -38,11 +26,11 @@ export class EventComponent implements OnInit {
       value: 0,
       eventDate: null,
       creationDate: null,
-    category: {
+      category: {
         name: '',
-      categoryId: 0
-    },
-  };
+        categoryId: 0
+      },
+    };
     this.eventService.getCategories().subscribe(e => this.categories = e);
   }
 
@@ -50,5 +38,4 @@ export class EventComponent implements OnInit {
     console.log(this.event);
     this.eventService.send(this.event);
   }
->>>>>>> origin/master
 }
