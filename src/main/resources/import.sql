@@ -5,4 +5,6 @@ insert into user_role(user_id,role_id) values (1,1);
 
 insert into category(category_id,name) values (1,'kategoria1');
 insert into category(category_id,name) values (2,'kategoria2');
+insert into category(category_id,name) values (3,'kategoria3');
+insert into category(category_id,name) values (4,'kategoria4');
 

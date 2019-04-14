@@ -3,6 +3,7 @@ package com.projektpo.wiorektrepka.budget.configuration;
 
 import com.projektpo.wiorektrepka.budget.domain.Category;
 import com.projektpo.wiorektrepka.budget.domain.Event;
+import com.projektpo.wiorektrepka.budget.domain.User;
 import com.projektpo.wiorektrepka.budget.service.CategoryService;
 import com.projektpo.wiorektrepka.budget.service.EventService;
 import com.projektpo.wiorektrepka.budget.service.UserService;
@@ -39,6 +40,11 @@ public class Rest {
         }
         events.forEach(e -> e.setOwner(null));
         return events.stream().filter(e -> e.getCategory().getName().equals(category)).collect(Collectors.toList());
+    }
+
+    @GetMapping("/event/count/")
+    public Integer countEventsByDate(String startDate, String endDate){
+        return eventService.countEventsBetweenDateCurrentUser(startDate,endDate);
     }
 
     @GetMapping("/event/{id}")
@@ -78,6 +84,11 @@ public class Rest {
     @PostMapping("/category/add")
     public void addCategory(@RequestBody Category category){
         categoryService.addNewCategory(category);
+    }
+
+    @GetMapping("/user")
+    public User getCurrentUser(){
+        return userService.getCurrentUserFormatted();
     }
 
 }

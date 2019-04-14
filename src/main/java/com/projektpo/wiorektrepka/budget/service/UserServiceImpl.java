@@ -30,4 +30,13 @@ public class UserServiceImpl implements UserService{
     public User findUserByNick(String username) {
         return userRepository.findUserByUsername(username);
     }
+
+    @Override
+    public User getCurrentUserFormatted() {
+        User u = getCurrentUser();
+        u.setPassword(null);
+        u.setEventList(null);
+        u.setRoles(null);
+        return u;
+    }
 }

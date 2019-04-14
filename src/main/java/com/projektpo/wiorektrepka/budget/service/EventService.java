@@ -12,6 +12,7 @@ public interface EventService {
     void deleteEvent(Integer id);
 
     List<Event> getEventsBetweenDateCurrentUser(String startDate, String endDate);
+    Integer countEventsBetweenDateCurrentUser(String startDate, String endDate);
 
     void addNewEvent(Event event);
 }

@@ -42,10 +42,9 @@ public class EventServiceImpl implements EventService {
     private Event generateEventFromBody(Event event) {
         Event m = new Event();
         m.setEvName(event.getEvName());
-        System.out.println(m.getEvName());
         m.setType(event.getType());
         m.setValue(event.getValue());
-        m.setCategory(categoryRepository.getOne(event.getCategory().getCategoryId()));
+        m.setCategory(event.getCategory());
         m.setEventDate(Date.valueOf(event.getEventDate().toLocalDate().plusDays(1)));
         return m;
     }
@@ -68,6 +67,11 @@ public class EventServiceImpl implements EventService {
         if (checkUserEvent(o, id)) {
             eventRepository.deleteById(id);
         }
+    }
+
+    @Override
+    public Integer countEventsBetweenDateCurrentUser(String startDate, String endDate) {
+        return eventRepository.countEventsByEventDateBetweenAndOwner(Date.valueOf(startDate),Date.valueOf(endDate),userService.getCurrentUser());
     }
 
     public boolean checkUserEvent(Optional<Event> o, Integer id) {

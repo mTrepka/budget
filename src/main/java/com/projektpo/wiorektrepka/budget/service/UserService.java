@@ -8,4 +8,6 @@ public interface UserService {
     String getCurrentUserNick();
 
     User findUserByNick(String username);
+
+    User getCurrentUserFormatted();
 }
