@@ -18,13 +18,11 @@ export class EventsComponent implements OnInit {
 
   ngOnInit() {
     const todayDate = new Date();
-    const today = todayDate.getFullYear() + '-' + (todayDate.getMonth() + 1) + '-' + todayDate.getDate();
+    const today = todayDate.getFullYear() + '-' + (todayDate.getMonth() + 1) + '-' + (todayDate.getDate() + 1);
     const weekDate = new Date(todayDate.getTime() - (7 * this.day));
     const monthDate = new Date(todayDate.getTime() - (30 * this.day));
     const week = weekDate.getFullYear() + '-' + (weekDate.getMonth() + 1) + '-' + weekDate.getDate();
     const month = monthDate.getFullYear() + '-' + (monthDate.getMonth() + 1) + '-' + monthDate.getDate();
-    console.log(today);
-    console.log(week);
     this.eventService.getEventsByDate(week, today).subscribe(e => {
         this.weekEvents = e;
         this.weekEvents.forEach(b => b.eventDate = new Date(b.eventDate).toDateString());

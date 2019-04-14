@@ -29,7 +29,10 @@ export class EventService {
   }
 
   send(event) {
-    console.log(event.eventDate);
     this.http.post<Event>('http://localhost:8080/event/', event, this.httpOptions).subscribe();
+  }
+
+  countEventsByDate(startDate, endDate) {
+    return this.http.get<number>('http://localhost:8080/event/count/?startDate=' + startDate + '&endDate=' + endDate);
   }
 }

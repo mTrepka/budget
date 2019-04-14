@@ -35,7 +35,7 @@ export class EventComponent implements OnInit {
   }
 
   send() {
-    console.log(this.event);
+    console.log(this.event.eventDate);
     this.eventService.send(this.event);
   }
 }

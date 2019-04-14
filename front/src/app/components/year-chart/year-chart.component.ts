@@ -41,24 +41,24 @@ export class YearChartComponent implements OnInit {
 
   ngOnInit() {
 
-    let a = new Date();
+    const a = new Date();
     const today = a.getDate();
-    let wyd = [];
-    let prz = [];
+    const wyd = [];
+    const prz = [];
     wyd[0] = 0;
-    let startDate = a.getFullYear() + '-' + 1 + '-' + 1;
-    let endDate = (a.getFullYear()) + '-' + 12 + '-' + 31;
+    const startDate = a.getFullYear() + '-' + 1 + '-' + 1;
+    const endDate = (a.getFullYear()) + '-' + 12 + '-' + 31;
 
     this.eventService.getEventsByDate(startDate, endDate).subscribe(e =>
       e.forEach(b => {
         const d = new Date(b.eventDate);
-        if (prz[d.getMonth()] == undefined) {
+        if (prz[d.getMonth()] === undefined) {
           prz[d.getMonth()] = 0;
         }
-        if (wyd[d.getMonth()] == undefined) {
+        if (wyd[d.getMonth()] === undefined) {
           wyd[d.getMonth()] = 0;
         }
-        if (b.type == 'wyd') {
+        if (b.type === 'wyd') {
           wyd[d.getMonth()] += b.value;
         } else {
           prz[d.getMonth()] += b.value;
@@ -71,7 +71,6 @@ export class YearChartComponent implements OnInit {
     ];
   }
 
-  // events
   public chartClicked({ event, active }: { event: MouseEvent, active: {}[] }): void {
   }
 

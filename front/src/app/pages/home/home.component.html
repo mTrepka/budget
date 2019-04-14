@@ -1,0 +1,16 @@
+<h1>Witaj {{user?.uname}}</h1>
+<div class="container">
+  <div class="chart">
+    <p>W tym tygodniu dodałeś {{weekCount}} wydarzeń, w tym miesiącu dodales {{monthCount}} wydarzeń. Od założenia konta
+      zostało dodanych {{allCount}} wydarzeń</p>
+  </div>
+  <div class="chart">
+    <h1>Stan finansowy miesiąca
+      <app-month-circle-chart></app-month-circle-chart>
+    </h1>
+  </div>
+  <div class="chart">
+    <app-category-chart></app-category-chart>
+  </div>
+  <app-year-chart class="chart year-chart">a</app-year-chart>
+</div>

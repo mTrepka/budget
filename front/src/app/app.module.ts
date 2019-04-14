@@ -30,6 +30,8 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {HttpClientModule} from '@angular/common/http';
 import {MonthChartComponent} from './components/month-chart/month-chart.component';
 import {WeekChartComponent} from './components/week-chart/week-chart.component';
+import {CategoryChartComponent} from './components/category-chart/category-chart.component';
+import {MonthPieChartComponent} from './components/month-circle-chart/month-pie-chart.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +45,9 @@ import {WeekChartComponent} from './components/week-chart/week-chart.component';
     HomeComponent,
     YearChartComponent,
     MonthChartComponent,
-    WeekChartComponent
+    WeekChartComponent,
+    CategoryChartComponent,
+    MonthPieChartComponent
   ],
   imports: [
     MatRadioModule,
