@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service("userService")
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService{
@@ -39,4 +41,22 @@ public class UserServiceImpl implements UserService{
         u.setRoles(null);
         return u;
     }
+
+    @Override
+    public void editName(String newName) {
+        getCurrentUser().setUName(newName);
+    }
+
+
+    @Override
+    public void editPassword(String newPassword) {
+        getCurrentUser().setPassword(newPassword);
+    }
+
+    @Override
+    public void editSurname(String surname) {
+        getCurrentUser().setSurname(surname);
+    }
+
+
 }

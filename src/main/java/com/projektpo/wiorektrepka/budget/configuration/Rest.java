@@ -91,4 +91,19 @@ public class Rest {
         return userService.getCurrentUserFormatted();
     }
 
+    @PostMapping("user/edit/password/{password}")
+    public void editPassword(@PathVariable("password") String password){
+         userService.editPassword(password);
+    }
+
+    @PostMapping("user/edit/name/{uName}")
+    public void editUName(@PathVariable("uName") String uName){
+        userService.editName(uName);
+    }
+
+    @PostMapping("user/edit/surname/{surname}")
+    public void editSurname(@PathVariable("surname") String surname){
+        userService.editSurname(surname);
+    }
+
 }

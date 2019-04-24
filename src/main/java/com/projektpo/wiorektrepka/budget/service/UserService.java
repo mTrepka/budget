@@ -10,4 +10,10 @@ public interface UserService {
     User findUserByNick(String username);
 
     User getCurrentUserFormatted();
+
+    void editName( String name);
+
+    void editPassword(String password);
+
+    void editSurname(String surname);
 }
