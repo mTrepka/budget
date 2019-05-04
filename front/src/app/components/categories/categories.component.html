@@ -1,0 +1,66 @@
+<table>
+  <caption><h1>Kategorie</h1></caption>
+  <tr>
+    <th>Nazwa</th>
+    <th>Opcje</th>
+  </tr>
+  <tr *ngFor="let category of categories">
+    <th class="catName">{{category.name}}</th>
+    <th>
+      <div (click)="remove(category.categoryId)">Usuń</div>
+      <div (click)="edit(category.categoryId)">Edytuj</div>
+      <div (click)="show(category.categoryId)">Wyświetl</div>
+    </th>
+  </tr>
+  <tr (click)="newCategory()">
+    <th>Dodaj</th>
+    <th>+</th>
+  </tr>
+
+</table>
+
+<div class="remove" [ngStyle]="{'visibility':rm === true ? 'visible' : 'hidden'}">
+  <button class="button-close" (click)="close()" mat-button>Close</button>
+  <h1>Czy na pewno usunąć</h1>
+  <div>{{result}}</div>
+  <button (click)="rem()" mat-button>Tak</button>
+  <button (click)="close()" mat-button>Nie</button>
+</div>
+
+<div class="edit" [ngStyle]="{'visibility':ed === true ? 'visible' : 'hidden'}">
+  <button class="button-close" (click)="close()" mat-button>Close</button>
+  <mat-form-field class="form-item">
+    <input matInput placeholder="Nazwa kategori" [(ngModel)]="cat.name">
+  </mat-form-field>
+  <br/>
+  <button (click)="change()" mat-button>Zmień</button>
+</div>
+<div class="new-category" [ngStyle]="{'visibility':nc === true ? 'visible' : 'hidden'}">
+  <button class="button-close" (click)="close()" mat-button>Close</button>
+  <mat-form-field class="form-item">
+    <input matInput placeholder="Nazwa nowej kategori" [(value)]="cat.name">
+  </mat-form-field>
+  <br/>
+  <button (click)="sendNew()" mat-button>Utwórz kategorie</button>
+</div>
+
+
+<div class="show" [ngStyle]="{'visibility':sh === true ? 'visible' : 'hidden'}">
+  <button class="button-close" (click)="close()" mat-button>Close</button>
+  <table>
+    <caption><h1>Ostatni miesiąc</h1></caption>
+    <tr>
+      <th>Nazwa</th>
+      <th>Typ</th>
+      <th>Kwota</th>
+      <th>Data</th>
+    </tr>
+    <tr *ngFor="let event of events">
+      <th>{{event.evName}}</th>
+      <th>{{event.type}}</th>
+      <th>{{event.value}}</th>
+      <th>{{event.eventDate}}</th>
+    </tr>
+
+  </table>
+</div>

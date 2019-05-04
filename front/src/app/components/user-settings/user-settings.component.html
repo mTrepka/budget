@@ -1,0 +1,36 @@
+<form (ngSubmit)="update()">
+  <div class="example-container">
+    <mat-form-field class="form-item">
+      <input name="uname" matInput placeholder="Imie" [(ngModel)]="user.uname">
+    </mat-form-field>
+  </div>
+  <div class="example-container">
+    <mat-form-field class="form-item">
+      <input name="surname" matInput placeholder="Nazwisko" [(ngModel)]="user.surname">
+    </mat-form-field>
+  </div>
+  <div class="example-container">
+    <mat-form-field class="form-item">
+      <input name="username" matInput placeholder="Login" [(ngModel)]="user.username">
+    </mat-form-field>
+  </div>
+  <div class="example-container">
+    <mat-form-field class="form-item">
+      <input name="pass1" matInput placeholder="Nowe Hasło" type="password" [(ngModel)]="user.pass1">
+    </mat-form-field>
+  </div>
+
+  <div class="example-container">
+    <mat-form-field class="form-item">
+      <input name="pass2" matInput placeholder="Powtórz hasło" type="password" [(ngModel)]="user.pass2">
+    </mat-form-field>
+  </div>
+
+  <div class="example-container">
+    <mat-form-field class="form-item">
+      <input name="password" matInput placeholder="Hasło" type="password" [(ngModel)]="user.password" required>
+    </mat-form-field>
+  </div>
+  <input type="submit" mat-button>
+
+</form>

@@ -3,7 +3,7 @@ import {ChartDataSets, ChartOptions} from 'chart.js';
 import {BaseChartDirective, Label} from 'ng2-charts';
 import * as pluginAnnotations from 'chartjs-plugin-annotation';
 import {EventService} from '../../service/event.service';
-
+import {Event} from '../Event';
 
 @Component({
   selector: 'app-year-chart',

@@ -4,7 +4,6 @@ import {BaseChartDirective, Label} from 'ng2-charts';
 import * as pluginAnnotations from 'chartjs-plugin-annotation';
 import {EventService} from '../../service/event.service';
 import {range} from 'rxjs';
-import {Event} from '../Event';
 
 @Component({
   selector: 'app-month-chart',
@@ -39,19 +38,16 @@ export class MonthChartComponent implements OnInit {
   }
 
   ngOnInit() {
-
-    let a = new Date();
+    const a = new Date();
     const today = a.getDate();
     const wyd = [];
     const prz = [];
     wyd[0] = 0;
     const startDate = a.getFullYear() + '-' + (a.getMonth() + 1) + '-' + 1;
     const endDate = a.getFullYear() + '-' + (a.getMonth() + 1) + '-' + (a.getDate() + 1);
-    console.log(endDate);
     this.eventService.getEventsByDate(startDate, endDate).subscribe(e =>
       e.forEach(b => {
         const d = new Date(b.eventDate);
-        console.log(e);
         if (prz[d.getDate()] === undefined) {
           prz[d.getDate()] = 0;
         }
@@ -59,14 +55,14 @@ export class MonthChartComponent implements OnInit {
           wyd[d.getDate()] = 0;
         }
         if (b.type === 'wyd') {
-          wyd[d.getDate()] = b.value;
+          wyd[d.getDate() - 1] = b.value;
         } else {
-          prz[d.getDate()] = b.value;
+          prz[d.getDate() - 1] = b.value;
         }
       })
     );
 
-    range(0, today + 1).subscribe(b => this.lineChartLabels.push(b + ''));
+    range(1, today + 1).subscribe(b => this.lineChartLabels.push(b + ''));
     this.lineChartData = [
       {data: wyd, label: 'Wydatki'},
       {data: prz, label: 'Przychody'},

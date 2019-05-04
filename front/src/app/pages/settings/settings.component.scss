@@ -1,0 +1,19 @@
+ul {
+  display: flex;
+  clear-after: both;
+  flex-direction: row;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+  border-bottom: 1px solid lawngreen;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+}
+
+li {
+  list-style-type: none;
+  width: 30vw;
+  font-size: 20px;
+}

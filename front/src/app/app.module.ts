@@ -32,6 +32,9 @@ import {MonthChartComponent} from './components/month-chart/month-chart.componen
 import {WeekChartComponent} from './components/week-chart/week-chart.component';
 import {CategoryChartComponent} from './components/category-chart/category-chart.component';
 import {MonthPieChartComponent} from './components/month-circle-chart/month-pie-chart.component';
+import {UserSettingsComponent} from './components/user-settings/user-settings.component';
+import {CategoriesComponent} from './components/categories/categories.component';
+import {CategoryComponent} from './components/category/category.component';
 
 @NgModule({
   declarations: [
@@ -47,7 +50,10 @@ import {MonthPieChartComponent} from './components/month-circle-chart/month-pie-
     MonthChartComponent,
     WeekChartComponent,
     CategoryChartComponent,
-    MonthPieChartComponent
+    MonthPieChartComponent,
+    UserSettingsComponent,
+    CategoriesComponent,
+    CategoryComponent
   ],
   imports: [
     MatRadioModule,

@@ -1,0 +1,62 @@
+table {
+  margin: auto;
+}
+
+.catName {
+  background: #c9f600;
+  width: 50vh;
+  margin: auto;
+  height: 30px;
+}
+
+div {
+  margin-top: 5px;
+}
+
+th {
+  background: #c9f600;
+}
+
+.remove {
+  visibility: visible;
+  position: absolute;
+  top: 150px;
+  left: 150px;
+  right: 150px;
+  background: red;
+  text-align: center;
+}
+
+.edit {
+  visibility: visible;
+  position: absolute;
+  top: 150px;
+  left: 150px;
+  right: 150px;
+  background: greenyellow;
+  text-align: center;
+}
+
+.show {
+  visibility: visible;
+  position: absolute;
+  top: 150px;
+  left: 150px;
+  right: 150px;
+  background: #c9f600;
+  text-align: center;
+}
+
+.button-close {
+  float: right;
+}
+
+.new-category {
+  visibility: visible;
+  position: absolute;
+  top: 150px;
+  left: 150px;
+  right: 150px;
+  background: #c9f600;
+  text-align: center;
+}

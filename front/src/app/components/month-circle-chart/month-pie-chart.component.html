@@ -1,0 +1,16 @@
+<div>
+  <div>
+    <div class="chart">
+      <canvas baseChart
+              [data]="pieChartData"
+              [labels]="pieChartLabels"
+              [chartType]="pieChartType"
+              [options]="pieChartOptions"
+              [plugins]="pieChartPlugins"
+              [colors]="pieChartColors"
+              [legend]="pieChartLegend"
+              (chartHover)="chartHovered($event)">
+      </canvas>
+    </div>
+  </div>
+</div>
