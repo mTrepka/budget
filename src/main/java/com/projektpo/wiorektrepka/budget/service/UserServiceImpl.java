@@ -1,12 +1,11 @@
 package com.projektpo.wiorektrepka.budget.service;
 
+import com.projektpo.wiorektrepka.budget.domain.FormUser;
 import com.projektpo.wiorektrepka.budget.domain.User;
 import com.projektpo.wiorektrepka.budget.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service("userService")
 @RequiredArgsConstructor
@@ -43,20 +42,19 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public void editName(String newName) {
-        getCurrentUser().setUName(newName);
+    public boolean updateCurrentUser(FormUser user) {
+        User u = getCurrentUser();
+        if(user.getPassword().equals(u.getPassword())) {
+            if (!user.getSurname().isEmpty())
+                u.setSurname(user.getSurname());
+            if (!user.getUName().isEmpty())
+                u.setUName(user.getUName());
+            if (!user.getUsername().isEmpty())
+                u.setUsername(user.getUsername());
+            if (!user.getPass1().isEmpty() && user.getPass1().equals(user.getPass2()))
+                u.setPassword(user.getPassword());
+        }
+        userRepository.save(u);
+        return false;
     }
-
-
-    @Override
-    public void editPassword(String newPassword) {
-        getCurrentUser().setPassword(newPassword);
-    }
-
-    @Override
-    public void editSurname(String surname) {
-        getCurrentUser().setSurname(surname);
-    }
-
-
 }

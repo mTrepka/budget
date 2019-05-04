@@ -1,5 +1,6 @@
 package com.projektpo.wiorektrepka.budget.service;
 
+import com.projektpo.wiorektrepka.budget.domain.FormUser;
 import com.projektpo.wiorektrepka.budget.domain.User;
 
 public interface UserService {
@@ -11,9 +12,5 @@ public interface UserService {
 
     User getCurrentUserFormatted();
 
-    void editName( String name);
-
-    void editPassword(String password);
-
-    void editSurname(String surname);
+    boolean updateCurrentUser(FormUser user);
 }

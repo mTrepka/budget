@@ -3,6 +3,7 @@ package com.projektpo.wiorektrepka.budget.configuration;
 
 import com.projektpo.wiorektrepka.budget.domain.Category;
 import com.projektpo.wiorektrepka.budget.domain.Event;
+import com.projektpo.wiorektrepka.budget.domain.FormUser;
 import com.projektpo.wiorektrepka.budget.domain.User;
 import com.projektpo.wiorektrepka.budget.service.CategoryService;
 import com.projektpo.wiorektrepka.budget.service.EventService;
@@ -10,10 +11,6 @@ import com.projektpo.wiorektrepka.budget.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import java.sql.Time;
-import java.sql.Timestamp;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -71,14 +68,19 @@ public class Rest {
         return categoryService.getAll();
     }
 
+    @GetMapping("/category/{id}")
+    public Category getCategoryById(@PathVariable Integer id){
+        return categoryService.getById(id);
+    }
+
     @PostMapping("/category/delete/{id}")
     public void deleteCategory(@PathVariable("id") Integer id){
         categoryService.deleteCategory(id);
     }
 
     @PostMapping("/category/edit/{id}")
-    public void editCategory(@PathVariable("id") Integer id, String name){
-        categoryService.editCategory(id, name);
+    public void editCategory(@PathVariable("id") Integer id,@RequestBody Category cat){
+        categoryService.editCategory(id, cat);
     }
 
     @PostMapping("/category/add")
@@ -91,19 +93,9 @@ public class Rest {
         return userService.getCurrentUserFormatted();
     }
 
-    @PostMapping("user/edit/password/{password}")
-    public void editPassword(@PathVariable("password") String password){
-         userService.editPassword(password);
-    }
-
-    @PostMapping("user/edit/name/{uName}")
-    public void editUName(@PathVariable("uName") String uName){
-        userService.editName(uName);
-    }
-
-    @PostMapping("user/edit/surname/{surname}")
-    public void editSurname(@PathVariable("surname") String surname){
-        userService.editSurname(surname);
+    @PostMapping("/user/edit/")
+    public boolean editPassword(@RequestBody FormUser user){
+        return userService.updateCurrentUser(user);
     }
 
 }

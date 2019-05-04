@@ -27,8 +27,7 @@ public class CategoryServiceImpl implements CategoryService{
 
     @Override
     public void addNewCategory(Category category) {
-        Category c = getCategoryFromBody(category);
-        categoryRepository.saveAndFlush(c);
+        categoryRepository.save(category);
     }
 
     @Override
@@ -36,16 +35,17 @@ public class CategoryServiceImpl implements CategoryService{
         Optional<Category> c = categoryRepository.findById(categoryId);
 
         if (checkCategory(c, categoryId))
+            if(c.get().getEventList()!=null && c.get().getEventList().size()==0)
             categoryRepository.deleteById(categoryId);
 
     }
 
     @Override
-    public void editCategory(int categoryId, String categoryName) {
+    public void editCategory(int categoryId, Category category) {
         Optional<Category> c = categoryRepository.findById(categoryId);
         if(checkCategory(c,categoryId)){
-            Category category = c.get();
-            category.setName(categoryName);
+            Category cat = c.get();
+            cat.setName(category.getName());
             categoryRepository.saveAndFlush(category);
         }
     }
@@ -53,11 +53,20 @@ public class CategoryServiceImpl implements CategoryService{
     private Category getCategoryFromBody(Category category){
         Category c = new Category();
         c.setName(category.getName());
-        c.setCategoryId(category.getCategoryId());
         return c;
     }
 
-    public boolean checkCategory(Optional<Category> c, Integer id) {
+    @Override
+    public Category getById(Integer id) {
+        Category c = categoryRepository.findById(id).get();
+        c.getEventList().forEach(e -> {
+            e.setCategory(null);
+            e.setOwner(null);
+        });
+        return c;
+    }
+
+    private boolean checkCategory(Optional<Category> c, Integer id) {
         return id != null && c.isPresent();
     }
 }
