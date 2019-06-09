@@ -1,19 +1,19 @@
 <table>
-  <caption><h1>Kategorie</h1></caption>
+  <caption><h1>Categories</h1></caption>
   <tr>
-    <th>Nazwa</th>
-    <th>Opcje</th>
+    <th>Name</th>
+    <th>Option</th>
   </tr>
   <tr *ngFor="let category of categories">
     <th class="catName">{{category.name}}</th>
     <th>
-      <div (click)="remove(category.categoryId)">Usuń</div>
-      <div (click)="edit(category.categoryId)">Edytuj</div>
-      <div (click)="show(category.categoryId)">Wyświetl</div>
+      <div (click)="remove(category.categoryId)">Remove</div>
+      <div (click)="edit(category.categoryId)">Edit</div>
+      <div (click)="show(category.categoryId)">Show</div>
     </th>
   </tr>
   <tr (click)="newCategory()">
-    <th>Dodaj</th>
+    <th>Add</th>
     <th>+</th>
   </tr>
 
@@ -21,38 +21,39 @@
 
 <div class="remove" [ngStyle]="{'visibility':rm === true ? 'visible' : 'hidden'}">
   <button class="button-close" (click)="close()" mat-button>Close</button>
-  <h1>Czy na pewno usunąć</h1>
+  <h1>Are you sure?</h1>
   <div>{{result}}</div>
-  <button (click)="rem()" mat-button>Tak</button>
-  <button (click)="close()" mat-button>Nie</button>
+  <button (click)="rem()" mat-button>Yes</button>
+  <button (click)="close()" mat-button>No</button>
 </div>
 
 <div class="edit" [ngStyle]="{'visibility':ed === true ? 'visible' : 'hidden'}">
   <button class="button-close" (click)="close()" mat-button>Close</button>
   <mat-form-field class="form-item">
-    <input matInput placeholder="Nazwa kategori" [(ngModel)]="cat.name">
+    <input matInput placeholder="Category name" [(ngModel)]="cat.name">
   </mat-form-field>
   <br/>
-  <button (click)="change()" mat-button>Zmień</button>
+  <button (click)="change()" mat-button>Change</button>
 </div>
+
 <div class="new-category" [ngStyle]="{'visibility':nc === true ? 'visible' : 'hidden'}">
   <button class="button-close" (click)="close()" mat-button>Close</button>
   <mat-form-field class="form-item">
-    <input matInput placeholder="Nazwa nowej kategori" [(value)]="cat.name">
+    <input matInput placeholder="New category name" [(ngModel)]="newCat.name">
   </mat-form-field>
   <br/>
-  <button (click)="sendNew()" mat-button>Utwórz kategorie</button>
+  <button (click)="sendNew()" mat-button>Create category</button>
 </div>
 
 
 <div class="show" [ngStyle]="{'visibility':sh === true ? 'visible' : 'hidden'}">
   <button class="button-close" (click)="close()" mat-button>Close</button>
   <table>
-    <caption><h1>Ostatni miesiąc</h1></caption>
+    <caption><h1>Last month</h1></caption>
     <tr>
-      <th>Nazwa</th>
-      <th>Typ</th>
-      <th>Kwota</th>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Value</th>
       <th>Data</th>
     </tr>
     <tr *ngFor="let event of events">
@@ -61,6 +62,5 @@
       <th>{{event.value}}</th>
       <th>{{event.eventDate}}</th>
     </tr>
-
   </table>
 </div>

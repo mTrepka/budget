@@ -10,18 +10,24 @@ export class CategoriesComponent implements OnInit {
   categories;
   events;
   cat;
+  newCat;
   current;
   rm = false;
   ed = false;
   sh = false;
   nc = false;
-  result = 'Wynik';
+  result = 'Result';
 
   constructor(private categoryService: CategoryService) {
   }
 
   ngOnInit() {
     this.cat = {
+      categoryId: 0,
+      name: '',
+      eventList: null
+    };
+    this.newCat = {
       categoryId: 0,
       name: '',
       eventList: null
@@ -73,7 +79,7 @@ export class CategoriesComponent implements OnInit {
   }
 
   sendNew() {
-    this.categoryService.createCategory(this.cat);
+    this.categoryService.createCategory(this.newCat);
     window.location.reload();
   }
 }

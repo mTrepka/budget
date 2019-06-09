@@ -9,7 +9,7 @@ import {FormControl} from '@angular/forms';
   styleUrls: ['./event.component.scss']
 })
 export class EventComponent implements OnInit {
-  types = ['Wydatki', 'Przychody'];
+  types = ['Expenses', 'Revenues'];
   categories: any;
   event: Event;
 

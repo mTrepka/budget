@@ -1,7 +1,7 @@
 <article>
 <div class="example-container">
   <mat-form-field class="form-item">
-    <input matInput placeholder="Nazwa" [(ngModel)]="event.evName">
+    <input matInput placeholder="Name" [(ngModel)]="event.evName">
   </mat-form-field>
 </div>
 <mat-radio-group
@@ -14,7 +14,7 @@
 </mat-radio-group>
 
 <mat-form-field class="form-item">
-  <mat-label>Wybierz kategorie</mat-label>
+  <mat-label>Select category</mat-label>
   <mat-select [(value)]="event.category.categoryId">
     <mat-option>None</mat-option>
     <mat-option value="option1" *ngFor="let category of categories" [value]="category.categoryId">{{category.name}}</mat-option>
@@ -22,16 +22,16 @@
   </mat-select>
 </mat-form-field>
 <mat-form-field class="form-item">
-  <input matInput placeholder="Wartość" [(ngModel)]="event.value">
+  <input matInput placeholder="Value" [(ngModel)]="event.value">
 </mat-form-field>
 
 <mat-form-field >
-  <input matInput [matDatepicker]="picker1" placeholder="Data wydarzenia" [formControl]="date" [(ngModel)]="event.eventDate" >
+  <input matInput [matDatepicker]="picker1" placeholder="Event date" [formControl]="date" [(ngModel)]="event.eventDate" >
   <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
   <mat-datepicker #picker1></mat-datepicker>
 </mat-form-field>
 
 <br/>
 
-  <button (click)="send()" mat-button>Wyslij</button>
+  <button (click)="send()" mat-button>Send</button>
 </article>

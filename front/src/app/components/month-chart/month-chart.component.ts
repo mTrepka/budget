@@ -47,6 +47,7 @@ export class MonthChartComponent implements OnInit {
     const endDate = a.getFullYear() + '-' + (a.getMonth() + 1) + '-' + (a.getDate() + 1);
     this.eventService.getEventsByDate(startDate, endDate).subscribe(e =>
       e.forEach(b => {
+        // @ts-ignore
         const d = new Date(b.eventDate);
         if (prz[d.getDate()] === undefined) {
           prz[d.getDate()] = 0;
@@ -55,8 +56,10 @@ export class MonthChartComponent implements OnInit {
           wyd[d.getDate()] = 0;
         }
         if (b.type === 'wyd') {
+          // @ts-ignore
           wyd[d.getDate() - 1] = b.value;
         } else {
+          // @ts-ignore
           prz[d.getDate() - 1] = b.value;
         }
       })
@@ -64,8 +67,8 @@ export class MonthChartComponent implements OnInit {
 
     range(1, today + 1).subscribe(b => this.lineChartLabels.push(b + ''));
     this.lineChartData = [
-      {data: wyd, label: 'Wydatki'},
-      {data: prz, label: 'Przychody'},
+      {data: wyd, label: 'Expenses'},
+      {data: prz, label: 'Revenues'},
     ];
   }
 

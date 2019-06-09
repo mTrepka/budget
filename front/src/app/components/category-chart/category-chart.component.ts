@@ -40,17 +40,9 @@ export class CategoryChartComponent implements OnInit {
       i++;
     }));
     this.radarChartData = [
-      {data: wyd, label: 'Wydatki'},
-      {data: prz, label: 'Przychody'},
+      {data: wyd, label: 'Expenses'},
+      {data: prz, label: 'Revenues'},
     ];
     this.radarChartLabels = labels;
-  }
-
-  public chartClicked({event, active}: { event: MouseEvent, active: {}[] }): void {
-    console.log(event, active);
-  }
-
-  public chartHovered({event, active}: { event: MouseEvent, active: {}[] }): void {
-    console.log(event, active);
   }
 }

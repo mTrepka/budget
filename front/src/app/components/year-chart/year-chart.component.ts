@@ -12,7 +12,7 @@ import {Event} from '../Event';
 })
 export class YearChartComponent implements OnInit {
   events = Event[''];
-  months = ['Styczeń', 'Luty', 'Marzec', 'Kwiecień', 'Maj', 'Czerwiec', 'Lipiec', 'Sierpień', 'Wrzesien', 'Pazdziernik', 'Listopad', 'Grudzien'];
+  months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
   public lineChartData: ChartDataSets[];
   public lineChartLabels: Label[] = this.months;
   public lineChartOptions: (ChartOptions & { annotation: any }) = {
@@ -51,6 +51,7 @@ export class YearChartComponent implements OnInit {
 
     this.eventService.getEventsByDate(startDate, endDate).subscribe(e =>
       e.forEach(b => {
+        // @ts-ignore
         const d = new Date(b.eventDate);
         if (prz[d.getMonth()] === undefined) {
           prz[d.getMonth()] = 0;
@@ -59,15 +60,17 @@ export class YearChartComponent implements OnInit {
           wyd[d.getMonth()] = 0;
         }
         if (b.type === 'wyd') {
+          // @ts-ignore
           wyd[d.getMonth()] += b.value;
         } else {
+          // @ts-ignore
           prz[d.getMonth()] += b.value;
         }
       })
     );
     this.lineChartData = [
-      {data: wyd, label: 'Wydatki'},
-      {data: prz, label: 'Przychody'},
+      {data: wyd, label: 'Expenses'},
+      {data: prz, label: 'Revenues'},
     ];
   }
 

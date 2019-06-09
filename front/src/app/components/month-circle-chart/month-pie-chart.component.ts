@@ -9,6 +9,7 @@ import {EventService} from '../../service/event.service';
   styleUrls: ['./month-pie-chart.component.scss']
 })
 export class MonthPieChartComponent implements OnInit {
+
   public pieChartOptions: ChartOptions = {
     responsive: true,
     legend: {
@@ -23,7 +24,7 @@ export class MonthPieChartComponent implements OnInit {
       },
     }
   };
-  public pieChartLabels: Label[] = ['Wydatki', 'Przychody'];
+  public pieChartLabels: Label[] = ['Expenses', 'Revenues'];
   public pieChartData: number[];
   public pieChartType: ChartType = 'pie';
   public pieChartLegend = true;
@@ -52,21 +53,15 @@ export class MonthPieChartComponent implements OnInit {
     this.eventService.getEventsByDate(startDate, endDate).subscribe(e =>
       e.forEach(b => {
           if (b.type === 'wyd') {
+            // @ts-ignore
             this.pieChartData[0] += b.value;
             i++;
           } else {
+            // @ts-ignore
             this.pieChartData[1] = b.value;
             j++;
           }
         }
       ));
-  }
-
-  public chartClicked({event, active}: { event: MouseEvent, active: {}[] }): void {
-    console.log(event, active);
-  }
-
-  public chartHovered({event, active}: { event: MouseEvent, active: {}[] }): void {
-    console.log(event, active);
   }
 }

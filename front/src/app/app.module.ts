@@ -29,7 +29,6 @@ import {
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {HttpClientModule} from '@angular/common/http';
 import {MonthChartComponent} from './components/month-chart/month-chart.component';
-import {WeekChartComponent} from './components/week-chart/week-chart.component';
 import {CategoryChartComponent} from './components/category-chart/category-chart.component';
 import {MonthPieChartComponent} from './components/month-circle-chart/month-pie-chart.component';
 import {UserSettingsComponent} from './components/user-settings/user-settings.component';
@@ -48,7 +47,6 @@ import {CategoryComponent} from './components/category/category.component';
     HomeComponent,
     YearChartComponent,
     MonthChartComponent,
-    WeekChartComponent,
     CategoryChartComponent,
     MonthPieChartComponent,
     UserSettingsComponent,

@@ -25,10 +25,10 @@ export class UserSettingsComponent implements OnInit {
 
   update() {
     if (this.user.password === '') {
-      alert('Brak hasła');
+      alert('No password');
     } else {
       if (this.user.pass1 !== this.user.pass2) {
-        alert('Hasła nie są identyczne');
+        alert('Password are different');
       } else {
         this.userService.update(this.user).subscribe();
       }
