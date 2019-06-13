@@ -31,7 +31,7 @@ export class CategoryChartComponent implements OnInit {
       wyd[i] = 0;
       prz[i] = 0;
       b.eventList.forEach(c => {
-        if (c.type === 'wyd') {
+        if (c.type === 'Expenses') {
           wyd[i] = c.value;
         } else {
           prz[i] = c.value;

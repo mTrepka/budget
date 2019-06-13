@@ -52,16 +52,22 @@ export class MonthPieChartComponent implements OnInit {
     const endDate = a.getFullYear() + '-' + (a.getMonth() + 1) + '-' + (a.getDate() + 1);
     this.eventService.getEventsByDate(startDate, endDate).subscribe(e =>
       e.forEach(b => {
-          if (b.type === 'wyd') {
+        if (b.type === 'Expenses') {
             // @ts-ignore
             this.pieChartData[0] += b.value;
             i++;
           } else {
             // @ts-ignore
-            this.pieChartData[1] = b.value;
+          this.pieChartData[1] += b.value;
             j++;
           }
         }
       ));
+  }
+
+  public chartClicked({event, active}: { event: MouseEvent, active: {}[] }): void {
+  }
+
+  public chartHovered({event, active}: { event: MouseEvent, active: {}[] }): void {
   }
 }

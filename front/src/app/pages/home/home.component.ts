@@ -22,8 +22,8 @@ export class HomeComponent implements OnInit {
     this.userService.getUser().subscribe(e => this.user = e);
     const todayDate = new Date();
     const today = todayDate.getFullYear() + '-' + (todayDate.getMonth() + 1) + '-' + (todayDate.getDate() + 1);
-    const weekDate = new Date(todayDate.getTime() - (7 * this.day));
-    const monthDate = new Date(todayDate.getTime() - (30 * this.day));
+    const weekDate = new Date(todayDate.getTime() - (6 * this.day));
+    const monthDate = new Date(todayDate.getTime() - (29 * this.day));
     const week = weekDate.getFullYear() + '-' + (weekDate.getMonth() + 1) + '-' + weekDate.getDate();
     const month = monthDate.getFullYear() + '-' + (monthDate.getMonth() + 1) + '-' + monthDate.getDate();
     this.eventService.countEventsByDate(week, today).subscribe(e => this.weekCount = e);

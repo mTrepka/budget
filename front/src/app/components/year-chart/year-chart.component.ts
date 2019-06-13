@@ -59,7 +59,7 @@ export class YearChartComponent implements OnInit {
         if (wyd[d.getMonth()] === undefined) {
           wyd[d.getMonth()] = 0;
         }
-        if (b.type === 'wyd') {
+        if (b.type === 'Expenses') {
           // @ts-ignore
           wyd[d.getMonth()] += b.value;
         } else {

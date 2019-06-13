@@ -40,27 +40,32 @@ export class MonthChartComponent implements OnInit {
   ngOnInit() {
     const a = new Date();
     const today = a.getDate();
-    const wyd = [];
-    const prz = [];
-    wyd[0] = 0;
+    let wyd = [];
+    let prz = [];
+
     const startDate = a.getFullYear() + '-' + (a.getMonth() + 1) + '-' + 1;
     const endDate = a.getFullYear() + '-' + (a.getMonth() + 1) + '-' + (a.getDate() + 1);
     this.eventService.getEventsByDate(startDate, endDate).subscribe(e =>
       e.forEach(b => {
         // @ts-ignore
         const d = new Date(b.eventDate);
-        if (prz[d.getDate()] === undefined) {
-          prz[d.getDate()] = 0;
-        }
-        if (wyd[d.getDate()] === undefined) {
-          wyd[d.getDate()] = 0;
-        }
-        if (b.type === 'wyd') {
-          // @ts-ignore
-          wyd[d.getDate() - 1] = b.value;
+        if (b.type === 'Expenses') {
+          if (wyd[d.getDate() - 1] === undefined) {
+            // @ts-ignore
+            wyd[d.getDate() - 1] = b.value;
+          } else {
+            // @ts-ignore
+            wyd[d.getDate() - 1] += b.value;
+          }
         } else {
           // @ts-ignore
-          prz[d.getDate() - 1] = b.value;
+          if (prz[d.getDate() - 1] === undefined) {
+            // @ts-ignore
+            prz[d.getDate() - 1] = b.value;
+          } else {
+            // @ts-ignore
+            prz[d.getDate() - 1] += b.value;
+          }
         }
       })
     );
@@ -74,10 +79,8 @@ export class MonthChartComponent implements OnInit {
 
   // events
   public chartClicked({event, active}: { event: MouseEvent, active: {}[] }): void {
-    console.log(event, active);
   }
 
   public chartHovered({event, active}: { event: MouseEvent, active: {}[] }): void {
-    console.log(event, active);
   }
 }
