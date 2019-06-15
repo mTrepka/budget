@@ -10,7 +10,6 @@ import java.util.List;
 
 @Repository("eventRepository")
 public interface EventRepository extends JpaRepository<Event,Integer> {
-
     List<Event> findAllByEventDateBetweenAndOwner(Date startDate, Date endDate, User user);
     Integer countEventsByEventDateBetweenAndOwner(Date startDate, Date endDate, User user);
 }

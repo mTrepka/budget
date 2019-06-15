@@ -1,17 +1,15 @@
-package com.projektpo.wiorektrepka.budget.configuration;
+package com.projektpo.wiorektrepka.budget.security;
 
-import com.projektpo.wiorektrepka.budget.domain.User;
 import com.projektpo.wiorektrepka.budget.domain.Role;
+import com.projektpo.wiorektrepka.budget.domain.User;
 import com.projektpo.wiorektrepka.budget.service.UserService;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
@@ -23,9 +21,10 @@ public class CustomUserDetailsService implements UserDetailsService {
     private final UserService userService;
 
     @Transactional()
-    public UserDetails loadUserByUsername(String nick)
+    public UserDetails loadUserByUsername(String username)
             throws UsernameNotFoundException {
-        User user = userService.findUserByNick(nick);
+
+        User user = userService.findUserByUsername(username);
         if(user==null){
             throw new UsernameNotFoundException("Username not found");
         }

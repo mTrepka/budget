@@ -1,4 +1,4 @@
-package com.projektpo.wiorektrepka.budget.configuration;
+package com.projektpo.wiorektrepka.budget.security;
 
 
 import org.springframework.context.annotation.Configuration;
@@ -12,6 +12,6 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedMethods("HEAD", "GET", "PUT", "POST", "DELETE", "PATCH");
+                .allowedMethods("HEAD", "GET", "POST");
     }
 }

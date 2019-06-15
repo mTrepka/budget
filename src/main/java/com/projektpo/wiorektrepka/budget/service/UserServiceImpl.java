@@ -5,17 +5,18 @@ import com.projektpo.wiorektrepka.budget.domain.User;
 import com.projektpo.wiorektrepka.budget.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service("userService")
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService{
     private final UserRepository userRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
     public User getCurrentUser() {
-        //return findUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
-        return findUserByUsername("user");
+        return findUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
     }
 
     @Override
@@ -23,7 +24,8 @@ public class UserServiceImpl implements UserService{
         return SecurityContextHolder.getContext().getAuthentication().getName();
     }
 
-    private User findUserByUsername(String name) {
+    @Override
+    public User findUserByUsername(String name) {
         return userRepository.findUserByUsername(name);
     }
 
@@ -39,6 +41,12 @@ public class UserServiceImpl implements UserService{
         u.setEventList(null);
         u.setRoles(null);
         return u;
+    }
+
+    @Override
+    public void createUser(User u) {
+        u.setPassword(bCryptPasswordEncoder.encode(u.getPassword()));
+        userRepository.save(u);
     }
 
     @Override

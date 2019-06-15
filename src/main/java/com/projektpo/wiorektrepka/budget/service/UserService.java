@@ -8,9 +8,13 @@ public interface UserService {
 
     String getCurrentUserNick();
 
-    User findUserByNick(String username);
+	User findUserByUsername(String name);
+
+	User findUserByNick(String username);
 
     User getCurrentUserFormatted();
 
-    boolean updateCurrentUser(FormUser user);
+	void createUser(User u);
+
+	boolean updateCurrentUser(FormUser user);
 }
