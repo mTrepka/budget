@@ -7,14 +7,16 @@ import {SettingsComponent} from '../pages/settings/settings.component';
 import {StatisticsComponent} from '../pages/statistics/statistics.component';
 import {UserSettingsComponent} from '../components/user-settings/user-settings.component';
 import {CategoriesComponent} from '../components/categories/categories.component';
+import {LoginComponent} from '../pages/login/login.component';
+import {AuthGuard} from '../guards/auth.guard';
 
 const routes: Routes = [
-  {path: '', component: HomeComponent},
-  {path: 'event', component: EventComponent},
-  {path: 'events', component: EventsComponent},
-  {path: 'statistics', component: StatisticsComponent},
-  {
-    path: 'settings', component: SettingsComponent,
+  {path: '', component: HomeComponent, canActivate: [AuthGuard]},
+  {path: 'event', component: EventComponent, canActivate: [AuthGuard]},
+  {path: 'events', component: EventsComponent, canActivate: [AuthGuard]},
+  {path: 'statistics', component: StatisticsComponent, canActivate: [AuthGuard]},
+  {path: 'login', component: LoginComponent},
+  {path: 'settings', component: SettingsComponent, canActivate: [AuthGuard],
     children: [
       {
         path: '',
@@ -30,6 +32,7 @@ const routes: Routes = [
       }
     ]
   },
+  {path: '**', redirectTo: ''}
 ];
 
 @NgModule({

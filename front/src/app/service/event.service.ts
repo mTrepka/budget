@@ -9,8 +9,7 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 export class EventService {
   httpOptions = {
     headers: new HttpHeaders({
-      'Content-Type': 'application/json'
-    })
+      'Content-Type': 'application/json'})
   };
 
   constructor(private http: HttpClient) {

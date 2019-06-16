@@ -27,13 +27,16 @@ import {
   MatTableModule
 } from '@angular/material';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {HttpClientModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {MonthChartComponent} from './components/month-chart/month-chart.component';
 import {CategoryChartComponent} from './components/category-chart/category-chart.component';
 import {MonthPieChartComponent} from './components/month-circle-chart/month-pie-chart.component';
 import {UserSettingsComponent} from './components/user-settings/user-settings.component';
 import {CategoriesComponent} from './components/categories/categories.component';
 import {CategoryComponent} from './components/category/category.component';
+import {LoginComponent} from './pages/login/login.component';
+import {JwtInterceptor} from './helpers/jwt.interceptor';
+import {ErrorInterceptor} from './helpers/error.interceptor';
 
 @NgModule({
   declarations: [
@@ -51,7 +54,8 @@ import {CategoryComponent} from './components/category/category.component';
     MonthPieChartComponent,
     UserSettingsComponent,
     CategoriesComponent,
-    CategoryComponent
+    CategoryComponent,
+    LoginComponent
   ],
   imports: [
     MatRadioModule,
@@ -68,7 +72,10 @@ import {CategoryComponent} from './components/category/category.component';
     HttpClientModule,
     MatTableModule, MatPaginatorModule, MatSortModule, MatButtonToggleModule, MatDatepickerModule, MatNativeDateModule
   ],
-  providers: [],
+  providers: [
+    {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
+    {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {
