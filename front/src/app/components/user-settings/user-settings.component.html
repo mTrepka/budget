@@ -1,36 +1,38 @@
-<form (ngSubmit)="update()">
+<form (ngSubmit)="update()" [formGroup]="settingsForm">
   <div class="example-container">
     <mat-form-field class="form-item">
-      <input name="uname" matInput placeholder="Name" [(ngModel)]="user.uname">
+      <input name="uname" matInput placeholder="Name" formControlName="uname">
     </mat-form-field>
   </div>
   <div class="example-container">
     <mat-form-field class="form-item">
-      <input name="surname" matInput placeholder="Second name" [(ngModel)]="user.surname">
+      <input name="surname" matInput placeholder="Last name" formControlName="surname">
     </mat-form-field>
   </div>
   <div class="example-container">
     <mat-form-field class="form-item">
-      <input name="username" matInput placeholder="Login" [(ngModel)]="user.username">
+      <input name="username" matInput placeholder="Login" formControlName="username">
     </mat-form-field>
   </div>
   <div class="example-container">
     <mat-form-field class="form-item">
-      <input name="pass1" matInput placeholder="New password" type="password" [(ngModel)]="user.pass1">
-    </mat-form-field>
-  </div>
-
-  <div class="example-container">
-    <mat-form-field class="form-item">
-      <input name="pass2" matInput placeholder="Repeat password" type="password" [(ngModel)]="user.pass2">
+      <input name="pass1" matInput placeholder="New password" type="password" formControlName="pass1">
     </mat-form-field>
   </div>
 
   <div class="example-container">
     <mat-form-field class="form-item">
-      <input name="password" matInput placeholder="Password" type="password" [(ngModel)]="user.password" required>
+      <input name="pass2" matInput placeholder="Repeat password" type="password" formControlName="pass2"
+             [errorStateMatcher]="matcher">
+      <mat-error *ngIf="settingsForm.hasError('notSame')">Different</mat-error>
     </mat-form-field>
   </div>
-  <input type="submit" mat-button value="Send">
+
+  <div class="example-container">
+    <mat-form-field class="form-item">
+      <input name="password" matInput placeholder="Password" type="password" formControlName="password" required>
+    </mat-form-field>
+  </div>
+  <input type="submit" mat-button value="Send" [disabled]="!settingsForm.valid">
 
 </form>

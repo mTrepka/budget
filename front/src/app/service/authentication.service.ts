@@ -25,10 +25,9 @@ export class AuthenticationService {
       username: user,
       password: pass
     };
-
-    return this.http.post('http://localhost:8080/login', u, {observe: 'response'})
+    return this.http.post<any>('http://localhost:8080/login', u, {observe: 'response'})
       .pipe(map(resp => {
-        if (resp.headers.get('Authorization')) {
+        if (resp && resp.headers.get('Authorization')) {
           this.currentUserSubject.next(user);
           localStorage.setItem('currentUser', user);
           localStorage.setItem('token', resp.headers.get('Authorization'));
