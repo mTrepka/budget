@@ -10,8 +10,6 @@ public interface UserService {
 
 	User findUserByUsername(String name);
 
-	User findUserByNick(String username);
-
     User getCurrentUserFormatted();
 
 	void createUser(User u);

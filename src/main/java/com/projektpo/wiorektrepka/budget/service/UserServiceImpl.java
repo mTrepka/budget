@@ -30,11 +30,6 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public User findUserByNick(String username) {
-        return userRepository.findUserByUsername(username);
-    }
-
-    @Override
     public User getCurrentUserFormatted() {
         User u = getCurrentUser();
         u.setPassword(null);
@@ -52,7 +47,7 @@ public class UserServiceImpl implements UserService{
     @Override
     public boolean updateCurrentUser(FormUser user) {
         User u = getCurrentUser();
-        if(user.getPassword().equals(u.getPassword())) {
+	    if (bCryptPasswordEncoder.matches(user.getPassword(), u.getPassword())) {
             if (!user.getSurname().isEmpty())
                 u.setSurname(user.getSurname());
             if (!user.getUName().isEmpty())
@@ -60,7 +55,7 @@ public class UserServiceImpl implements UserService{
             if (!user.getUsername().isEmpty())
                 u.setUsername(user.getUsername());
             if (!user.getPass1().isEmpty() && user.getPass1().equals(user.getPass2()))
-                u.setPassword(user.getPassword());
+	            u.setPassword(bCryptPasswordEncoder.encode(user.getPass1()));
         }
         userRepository.save(u);
         return false;

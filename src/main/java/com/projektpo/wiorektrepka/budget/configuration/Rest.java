@@ -94,8 +94,8 @@ public class Rest {
     }
 
     @PostMapping("/user/edit/")
-    public boolean editUser(@RequestBody FormUser user){
-        return userService.updateCurrentUser(user);
+    public boolean editUser(@RequestBody FormUser user) {
+	    return userService.updateCurrentUser(user);
     }
 
 }
