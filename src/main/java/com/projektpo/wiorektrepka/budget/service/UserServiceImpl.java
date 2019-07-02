@@ -8,11 +8,14 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
+
 @Service("userService")
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService{
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final RoleService roleService;
 
     @Override
     public User getCurrentUser() {
@@ -59,5 +62,35 @@ public class UserServiceImpl implements UserService{
         }
         userRepository.save(u);
         return false;
+    }
+
+    @Override
+    public boolean isUserWithThisEmail(String email) {
+        return userRepository.findUserByEmail(email) != null;
+    }
+
+    @Override
+    public boolean isUserWithThisUsername(String username) {
+        return userRepository.findUserByUsername(username) != null;
+    }
+
+    @Override
+    public void registerUser(FormUser user) {
+        if (!isUserWithThisEmail(user.getEmail()) && !isUserWithThisUsername(user.getUsername()) && user.getPass1().equals(user.getPass2())) {
+            User u = getUserFromFormUser(user);
+            u.getRoles().add(roleService.getUserRole());
+            userRepository.save(u);
+        }
+    }
+
+    private User getUserFromFormUser(FormUser user) {
+        User u = new User();
+        u.setPassword(bCryptPasswordEncoder.encode(user.getPass1()));
+        u.setUsername(user.getUsername());
+        u.setSurname(user.getSurname());
+        u.setUName(user.getUName());
+        u.setEmail(user.getEmail());
+        u.setRoles(new HashSet<>());
+        return u;
     }
 }

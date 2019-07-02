@@ -15,4 +15,10 @@ public interface UserService {
 	void createUser(User u);
 
 	boolean updateCurrentUser(FormUser user);
+
+	boolean isUserWithThisUsername(String username);
+
+	void registerUser(FormUser user);
+
+	boolean isUserWithThisEmail(String email);
 }

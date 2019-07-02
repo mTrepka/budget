@@ -98,4 +98,19 @@ public class Rest {
 	    return userService.updateCurrentUser(user);
     }
 
+    @PostMapping("/register")
+    public void registerUser(@RequestBody FormUser user) {
+        userService.registerUser(user);
+    }
+
+    @GetMapping("/email/")
+    public boolean isUserWithEmailRegister(String email) {
+        return userService.isUserWithThisEmail(email);
+    }
+
+    @GetMapping("/username/")
+    public boolean isUserWithUsernameRegister(String username) {
+        return userService.isUserWithThisUsername(username);
+    }
+
 }
