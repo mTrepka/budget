@@ -1,12 +1,10 @@
 package com.projektpo.wiorektrepka.budget.configuration;
 
 
-import com.projektpo.wiorektrepka.budget.domain.Category;
-import com.projektpo.wiorektrepka.budget.domain.Event;
-import com.projektpo.wiorektrepka.budget.domain.FormUser;
-import com.projektpo.wiorektrepka.budget.domain.User;
+import com.projektpo.wiorektrepka.budget.domain.*;
 import com.projektpo.wiorektrepka.budget.service.CategoryService;
 import com.projektpo.wiorektrepka.budget.service.EventService;
+import com.projektpo.wiorektrepka.budget.service.LogService;
 import com.projektpo.wiorektrepka.budget.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +18,7 @@ public class Rest {
     private final UserService userService;
     private final EventService eventService;
     private final CategoryService categoryService;
+    private final LogService logService;
 
 
     @GetMapping("/event/")
@@ -113,4 +112,8 @@ public class Rest {
         return userService.isUserWithThisUsername(username);
     }
 
+    @GetMapping("/user/security/log/")
+    public List<AuthorizationLog> getAuthLog(){
+        return logService.getCurrentUserAuthLog();
+    }
 }

@@ -18,5 +18,5 @@ public class AuthorizationLog {
 	private String ip;
 	private String type;
 	@CreationTimestamp
-	private Timestamp timestamp;
+	private Timestamp date;
 }
