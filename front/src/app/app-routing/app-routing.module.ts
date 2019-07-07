@@ -10,6 +10,7 @@ import {CategoriesComponent} from '../components/categories/categories.component
 import {LoginComponent} from '../pages/login/login.component';
 import {AuthGuard} from '../guards/auth.guard';
 import {RegistrationComponent} from '../pages/registration/registration.component';
+import {SecurityLogComponent} from '../components/security-log/security-log.component';
 
 const routes: Routes = [
   {path: '', component: HomeComponent, canActivate: [AuthGuard]},
@@ -31,6 +32,10 @@ const routes: Routes = [
       {
         path: 'categories',
         component: CategoriesComponent,
+      },
+      {
+        path: 'security',
+        component: SecurityLogComponent,
       }
     ]
   },

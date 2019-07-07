@@ -36,4 +36,8 @@ export class UserService {
   userExistByUsername(username) {
     return this.http.get<boolean>('http://localhost:8080/username/?username=' + username);
   }
+
+  getUserSecuritylog() {
+    return this.http.get('http://localhost:8080/user/security/log/');
+  }
 }

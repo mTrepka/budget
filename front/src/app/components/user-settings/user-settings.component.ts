@@ -20,15 +20,19 @@ export class UserSettingsComponent implements OnInit {
       surname: [''],
       username: [''],
       uname: [''],
-      pass1: ['', Validators.required],
-      pass2: ['']
-    }, {validators: this.checkPasswords});
+      pass1: [''],
+      pass2: [''],
+      password: ['', Validators.required]
+    }, {validator: this.checkPasswords});
   }
 
   checkPasswords(group: FormGroup) {
     const pass1 = group.controls.pass1.value;
     const pass2 = group.controls.pass2.value;
-    return pass1 === pass2 ? null : {notSame: true};
+    if (pass1 !== pass2) {
+      group.controls.pass2.setErrors({notSame: true});
+    }
+    return pass1 !== pass2 ? {notSame: true} : null;
   }
 
   update() {

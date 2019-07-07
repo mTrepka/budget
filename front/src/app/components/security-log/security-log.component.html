@@ -1,0 +1,13 @@
+<table>
+  <caption><h1>Security log</h1></caption>
+  <tr>
+    <th>Ip</th>
+    <th>Type</th>
+    <th>Date</th>
+  </tr>
+  <tr *ngFor="let Log of securityLog">
+    <th>{{Log.ip}}</th>
+    <th>{{Log.type}}</th>
+    <th>{{Log.date}}</th>
+  </tr>
+</table>

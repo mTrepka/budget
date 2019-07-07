@@ -38,6 +38,7 @@ import {LoginComponent} from './pages/login/login.component';
 import {JwtInterceptor} from './helpers/jwt.interceptor';
 import {ErrorInterceptor} from './helpers/error.interceptor';
 import {RegistrationComponent} from './pages/registration/registration.component';
+import {SecurityLogComponent} from './components/security-log/security-log.component';
 
 @NgModule({
   declarations: [
@@ -57,7 +58,8 @@ import {RegistrationComponent} from './pages/registration/registration.component
     CategoriesComponent,
     CategoryComponent,
     LoginComponent,
-    RegistrationComponent
+    RegistrationComponent,
+    SecurityLogComponent
   ],
   imports: [
     MatRadioModule,
