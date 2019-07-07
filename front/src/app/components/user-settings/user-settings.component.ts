@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {UserService} from '../../service/user.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {MyErrorStateMatcher} from 'src/app/helpers/my-error-state-matcher';
+import {MyErrorStateMatcher} from '../../helpers/my-error-state-matcher';
 
 
 @Component({
@@ -12,7 +12,6 @@ import {MyErrorStateMatcher} from 'src/app/helpers/my-error-state-matcher';
 export class UserSettingsComponent implements OnInit {
   settingsForm: FormGroup;
   matcher = new MyErrorStateMatcher();
-  
   constructor(private userService: UserService, private formBuilder: FormBuilder) {
   }
 
@@ -21,8 +20,7 @@ export class UserSettingsComponent implements OnInit {
       surname: [''],
       username: [''],
       uname: [''],
-      password: ['', Validators.required],
-      pass1: [''],
+      pass1: ['', Validators.required],
       pass2: ['']
     }, {validators: this.checkPasswords});
   }

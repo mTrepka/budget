@@ -37,6 +37,7 @@ import {CategoryComponent} from './components/category/category.component';
 import {LoginComponent} from './pages/login/login.component';
 import {JwtInterceptor} from './helpers/jwt.interceptor';
 import {ErrorInterceptor} from './helpers/error.interceptor';
+import {RegistrationComponent} from './pages/registration/registration.component';
 
 @NgModule({
   declarations: [
@@ -55,7 +56,8 @@ import {ErrorInterceptor} from './helpers/error.interceptor';
     UserSettingsComponent,
     CategoriesComponent,
     CategoryComponent,
-    LoginComponent
+    LoginComponent,
+    RegistrationComponent
   ],
   imports: [
     MatRadioModule,

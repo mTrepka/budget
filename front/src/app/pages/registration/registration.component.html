@@ -1,0 +1,41 @@
+<form (ngSubmit)="update()" [formGroup]="registrationForm">
+  <div class="example-container">
+    <mat-form-field class="form-item">
+      <input name="uname" matInput placeholder="Name" formControlName="uname">
+    </mat-form-field>
+  </div>
+  <div class="example-container">
+    <mat-form-field class="form-item">
+      <input name="surname" matInput placeholder="Last name" formControlName="surname">
+    </mat-form-field>
+  </div>
+  <div class="example-container">
+    <mat-form-field class="form-item">
+      <input name="username" matInput placeholder="Login" formControlName="username">
+      <mat-error *ngIf="registrationForm.get('username').hasError('usernameTaken')">This username exist</mat-error>
+    </mat-form-field>
+  </div>
+  <div class="example-container">
+    <mat-form-field class="form-item">
+      <input name="email" matInput placeholder="Email" formControlName="email"
+      >
+      <mat-error *ngIf="registrationForm.get('email').hasError('emailTaken')">This email exist</mat-error>
+    </mat-form-field>
+  </div>
+  <div class="example-container">
+    <mat-form-field class="form-item">
+      <input name="pass1" matInput placeholder="Password" type="password" formControlName="pass1">
+      <mat-error *ngIf="registrationForm.get('pass1').hasError('minlength')">Too short password</mat-error>
+    </mat-form-field>
+  </div>
+
+  <div class="example-container">
+    <mat-form-field class="form-item">
+      <input name="pass2" matInput placeholder="Repeat password" type="password" formControlName="pass2">
+      <mat-error *ngIf="registrationForm.hasError('notSame')">Different</mat-error>
+
+    </mat-form-field>
+  </div>
+  <input type="submit" mat-button value="Register" [disabled]="!registrationForm.valid">
+
+</form>

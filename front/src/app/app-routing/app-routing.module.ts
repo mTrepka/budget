@@ -9,6 +9,7 @@ import {UserSettingsComponent} from '../components/user-settings/user-settings.c
 import {CategoriesComponent} from '../components/categories/categories.component';
 import {LoginComponent} from '../pages/login/login.component';
 import {AuthGuard} from '../guards/auth.guard';
+import {RegistrationComponent} from '../pages/registration/registration.component';
 
 const routes: Routes = [
   {path: '', component: HomeComponent, canActivate: [AuthGuard]},
@@ -16,6 +17,7 @@ const routes: Routes = [
   {path: 'events', component: EventsComponent, canActivate: [AuthGuard]},
   {path: 'statistics', component: StatisticsComponent, canActivate: [AuthGuard]},
   {path: 'login', component: LoginComponent},
+  {path: 'registration', component: RegistrationComponent},
   {path: 'settings', component: SettingsComponent, canActivate: [AuthGuard],
     children: [
       {
