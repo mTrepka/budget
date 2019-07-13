@@ -50,23 +50,29 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public void editEvent(Integer id, String name, String type, Integer categoryId) {
-        Optional<Event> o = eventRepository.findById(id);
-        if (checkUserEvent(o, id)) {
-            Event m = o.get();
-            m.setEvName(name);
-            m.setType(type);
-            m.setCategory(categoryRepository.getOne(categoryId));
-            eventRepository.saveAndFlush(m);
-        }
-    }
-
-    @Override
     public void deleteEvent(Integer id) {
         Optional<Event> o = eventRepository.findById(id);
         if (checkUserEvent(o, id)) {
             eventRepository.deleteById(id);
         }
+    }
+
+    @Override
+    public void updateEvent(Event event) {
+        Event e = eventRepository.findById(event.getMoneyId()).get();
+        if (canEventEdit(e)) {
+            e.setValue(event.getValue());
+            e.setCategory(categoryRepository.getOne(event.getCategory().getCategoryId()));
+            e.setEvName(event.getEvName());
+            e.setEventDate(event.getEventDate());
+            e.setType(event.getType());
+            eventRepository.save(e);
+        }
+
+    }
+
+    private boolean canEventEdit(Event event) {
+        return event.getOwner().getUsername().equals(userService.getCurrentUserNick());
     }
 
     @Override

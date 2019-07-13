@@ -53,9 +53,9 @@ public class Rest {
         eventService.addNewEvent(event);
     }
 
-    @PostMapping("/event/edit/{id}")
-    public void editEvent(@PathVariable("id") Integer id, String name,String type,Integer categoryId){
-        eventService.editEvent(id,name,type,categoryId);
+    @PostMapping("/event/edit/")
+    public void editEvent(@RequestBody Event event) {
+        eventService.updateEvent(event);
     }
     @PostMapping("/event/delete/{id}")
     public void deleteEvent(@PathVariable("id") Integer id){
