@@ -1,5 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {EventService} from 'src/app/service/event.service';
+import {Event} from '../../components/Event';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-events',
@@ -24,7 +26,55 @@ export class EventsComponent implements OnInit {
   filteredEvents;
   day = (24 * 60 * 60 * 1000);
 
-  constructor(private eventService: EventService) {
+  blackScreen;
+  event: Event;
+  eventForm: FormGroup;
+
+  insertEventDataToForm() {
+    this.eventForm.controls.evName.setValue(this.event.evName);
+    this.eventForm.controls.categoryId.setValue(this.event.category.categoryId);
+    this.eventForm.controls.moneyId.setValue(this.event.moneyId);
+    this.eventForm.controls.type.setValue(this.event.type);
+    this.eventForm.controls.eventDate.setValue(new Date(this.event.eventDate));
+    this.eventForm.controls.value.setValue(this.event.value);
+  }
+
+  formToEventObject() {
+    this.event = {
+      evName: this.eventForm.controls.evName.value,
+      moneyId: this.eventForm.controls.moneyId.value,
+      type: this.eventForm.controls.type.value,
+      value: this.eventForm.controls.value.value,
+      eventDate: this.eventForm.controls.eventDate.value,
+      creationDate: null,
+      category: {
+        name: '',
+        categoryId: this.eventForm.controls.categoryId.value
+      },
+    };
+  }
+
+  update() {
+    this.formToEventObject();
+    this.eventService.updateEvent(this.event);
+    window.location.reload();
+  }
+
+  editEvent(id) {
+    this.event = this.allEvents.filter(e => e.moneyId === id)[0];
+    this.showBlackScreen();
+    this.insertEventDataToForm();
+  }
+
+  showBlackScreen() {
+    this.blackScreen = true;
+  }
+
+  hideBlackScreem() {
+    this.blackScreen = false;
+  }
+
+  constructor(private eventService: EventService, private formBuilder: FormBuilder) {
   }
 
   ngOnInit() {
@@ -54,6 +104,16 @@ export class EventsComponent implements OnInit {
     );
 
     this.eventService.getCategories().subscribe(e => this.categories = e);
+
+    this.eventForm = this.formBuilder.group({
+      evName: ['', Validators.required],
+      moneyId: [0, Validators.required],
+      type: ['', Validators.required],
+      value: [0, Validators.required],
+      eventDate: ['', Validators.required],
+      creationDate: [''],
+      categoryId: [0, Validators.required]
+    });
   }
 
   dateParser(date) {

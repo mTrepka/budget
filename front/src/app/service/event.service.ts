@@ -23,6 +23,10 @@ export class EventService {
     return this.http.get<Array<Event>>('http://localhost:8080/event/?startDate=' + startDate + '&endDate=' + endDate);
   }
 
+  updateEvent(event) {
+    this.http.post<Event>('http://localhost:8080/event/edit/', event, this.httpOptions).subscribe();
+  }
+
   getCategories() {
     return this.http.get('http://localhost:8080/category');
   }

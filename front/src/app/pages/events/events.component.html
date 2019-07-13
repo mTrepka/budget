@@ -27,7 +27,7 @@
     <th>Data</th>
   </tr>
   <tr *ngFor="let event of monthEvents">
-    <th>{{event.evName}}</th>
+    <th (click)="editEvent(event.moneyId)">{{event.evName}}</th>
     <th>{{event.type}}</th>
     <th>{{event.category.name}}</th>
     <th>{{event.value}}</th>
@@ -85,7 +85,7 @@
     </th>
   </tr>
   <tr *ngFor="let event of filteredEvents">
-    <th>{{event.evName}}</th>
+    <th (click)="editEvent(event.moneyId)">{{event.evName}}</th>
     <th>{{event.type}}</th>
     <th>{{event.category.name}}</th>
     <th>{{event.value}}</th>
@@ -93,3 +93,48 @@
   </tr>
 
 </table>
+
+<div id="blackScreen" [ngStyle]="{'visibility':blackScreen === true ? 'visible' : 'hidden'}">
+
+  <div id="blackScreenForm">
+    <p class="close" (click)="hideBlackScreem()">X</p>
+    <form [formGroup]="eventForm" (ngSubmit)="update()">
+      <div class="example-container">
+        <mat-form-field class="form-item">
+          <input formControlName="evName" matInput placeholder="Name">
+        </mat-form-field>
+      </div>
+      <mat-radio-group
+        aria-labelledby="example-radio-group-label"
+        class="radio-group form-item"
+        formControlName="type">
+        <mat-radio-button *ngFor="let type of types" [value]="type" class="radio-button">
+          {{type}}
+        </mat-radio-button>
+      </mat-radio-group>
+
+      <mat-form-field class="form-item">
+        <mat-label>Select category</mat-label>
+        <mat-select formControlName="categoryId">
+          <mat-option>None</mat-option>
+          <mat-option *ngFor="let category of categories" [value]="category.categoryId"
+                      value="option1">{{category.name}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field class="form-item">
+        <input formControlName="value" matInput placeholder="Value" type="number">
+      </mat-form-field>
+
+      <mat-form-field>
+        <input [matDatepicker]="picker3" formControlName="eventDate" matInput type="text">
+        <mat-datepicker-toggle [for]="picker3" matSuffix></mat-datepicker-toggle>
+        <mat-datepicker #picker3></mat-datepicker>
+      </mat-form-field>
+      <br/>
+
+      <input [disabled]="!eventForm.valid" mat-button type="submit" value="Send">
+    </form>
+  </div>
+
+</div>

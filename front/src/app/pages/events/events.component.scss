@@ -14,3 +14,51 @@ table {
     background: #c9f600;
   }
 }
+
+#blackScreen {
+  background: rgba(0, 0, 0, 0.7);
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100vw;
+}
+
+#blackScreenForm {
+  position: absolute;
+  left: 25%;
+  right: 25%;
+  top: 100px;
+  background: white;
+  height: 500px;
+}
+
+.radio-group {
+  display: flex;
+  flex-direction: column;
+
+}
+
+.radio-button {
+  padding: 5px;
+}
+
+.form-item {
+  display: flex;
+  flex-direction: column;
+  width: 500px;
+  margin-bottom: 12px;
+}
+
+.close {
+  text-align: center;
+  color: #c9f600;
+  height: 30px;
+  width: 30px;
+  font-size: 30px;
+  border: #c9f600 3px solid;
+  box-shadow: 2px 2px 12px 2px lawngreen;
+  margin-top: 10px;
+  margin-right: 10px;
+  float: right;
+}
