@@ -12,6 +12,6 @@ public class Category {
     @Id
     private int categoryId;
     private String name;
-    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "category", fetch = FetchType.EAGER)
     private List<Event> eventList;
 }

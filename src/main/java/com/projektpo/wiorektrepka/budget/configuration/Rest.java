@@ -1,7 +1,10 @@
 package com.projektpo.wiorektrepka.budget.configuration;
 
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
 import com.projektpo.wiorektrepka.budget.domain.*;
+import com.projektpo.wiorektrepka.budget.security.util.SecurityConstants;
 import com.projektpo.wiorektrepka.budget.service.CategoryService;
 import com.projektpo.wiorektrepka.budget.service.EventService;
 import com.projektpo.wiorektrepka.budget.service.LogService;
@@ -9,7 +12,10 @@ import com.projektpo.wiorektrepka.budget.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
@@ -115,5 +121,18 @@ public class Rest {
     @GetMapping("/user/security/log/")
     public List<AuthorizationLog> getAuthLog(){
         return logService.getCurrentUserAuthLog();
+    }
+
+    @GetMapping("/user/info-token")
+    public Map<String,String> getUsernameAndToken() {
+        Map<String,String> map = new HashMap<>();
+        String username = userService.getCurrentUserNick();
+        String token = JWT.create()
+                .withSubject(username)
+                .withExpiresAt(new Date(System.currentTimeMillis() + SecurityConstants.EXPIRATION_TIME))
+                .sign(Algorithm.HMAC512(SecurityConstants.SECRET.getBytes()));
+        map.put("username",username);
+        map.put("token",token);
+        return map;
     }
 }

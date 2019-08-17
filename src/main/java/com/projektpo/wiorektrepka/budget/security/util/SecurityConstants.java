@@ -1,4 +1,4 @@
-package com.projektpo.wiorektrepka.budget.security;
+package com.projektpo.wiorektrepka.budget.security.util;
 
 public class SecurityConstants {
 	public static final String SECRET = "SecretKeyToGenJWTs";

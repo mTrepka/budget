@@ -10,3 +10,14 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL5Dialect
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            clientId: 256374489305-hglea37snvg8quu8dda74uiu1q77qb3j.apps.googleusercontent.com
+            clientSecret: 52lDPRZtaxdGZlSqaj6G8on4
+            redirectUriTemplate: "{baseUrl}/oauth2/callback/{registrationId}"
+            scope:
+              - email
+              - profile

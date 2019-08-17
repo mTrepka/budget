@@ -3,11 +3,14 @@ package com.projektpo.wiorektrepka.budget.service;
 import com.projektpo.wiorektrepka.budget.domain.FormUser;
 import com.projektpo.wiorektrepka.budget.domain.User;
 import com.projektpo.wiorektrepka.budget.repository.UserRepository;
+import com.projektpo.wiorektrepka.budget.security.oauth2.user.OAuth2UserInfo;
 import lombok.RequiredArgsConstructor;
+import net.bytebuddy.utility.RandomString;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 
 @Service("userService")
@@ -92,5 +95,19 @@ public class UserServiceImpl implements UserService{
         u.setEmail(user.getEmail());
         u.setRoles(new HashSet<>());
         return u;
+    }
+
+    @Override
+    public User registerUser(OAuth2UserInfo oAuth2UserInfo) {
+        User user = new User();
+        user.setUName(oAuth2UserInfo.getName());
+        user.setUsername(oAuth2UserInfo.getEmail());
+        user.setSurname(" ");
+        user.setEmail(oAuth2UserInfo.getEmail());
+        user.setEventList(new ArrayList<>());
+        user.setPassword(bCryptPasswordEncoder.encode(RandomString.make(10)));
+        user.setRoles(new HashSet<>());
+        userRepository.save(user);
+        return user;
     }
 }

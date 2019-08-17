@@ -25,6 +25,8 @@ public class CategoryServiceImpl implements CategoryService{
         return categories;
     }
 
+
+
     @Override
     public void addNewCategory(Category category) {
         categoryRepository.save(category);

@@ -1,7 +1,8 @@
-package com.projektpo.wiorektrepka.budget.security;
+package com.projektpo.wiorektrepka.budget.security.jwt;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.projektpo.wiorektrepka.budget.security.util.SecurityConstants;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
