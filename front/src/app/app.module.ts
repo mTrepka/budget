@@ -39,6 +39,7 @@ import {JwtInterceptor} from './helpers/jwt.interceptor';
 import {ErrorInterceptor} from './helpers/error.interceptor';
 import {RegistrationComponent} from './pages/registration/registration.component';
 import {SecurityLogComponent} from './components/security-log/security-log.component';
+import {SocialLoginComponent} from './pages/social-login/social-login.component';
 
 @NgModule({
   declarations: [
@@ -59,7 +60,8 @@ import {SecurityLogComponent} from './components/security-log/security-log.compo
     CategoryComponent,
     LoginComponent,
     RegistrationComponent,
-    SecurityLogComponent
+    SecurityLogComponent,
+    SocialLoginComponent
   ],
   imports: [
     MatRadioModule,

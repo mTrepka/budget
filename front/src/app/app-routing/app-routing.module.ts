@@ -11,6 +11,7 @@ import {LoginComponent} from '../pages/login/login.component';
 import {AuthGuard} from '../guards/auth.guard';
 import {RegistrationComponent} from '../pages/registration/registration.component';
 import {SecurityLogComponent} from '../components/security-log/security-log.component';
+import {SocialLoginComponent} from '../pages/social-login/social-login.component';
 
 const routes: Routes = [
   {path: '', component: HomeComponent, canActivate: [AuthGuard]},
@@ -19,6 +20,7 @@ const routes: Routes = [
   {path: 'statistics', component: StatisticsComponent, canActivate: [AuthGuard]},
   {path: 'login', component: LoginComponent},
   {path: 'registration', component: RegistrationComponent},
+  {path: 'social-login', component: SocialLoginComponent},
   {path: 'settings', component: SettingsComponent, canActivate: [AuthGuard],
     children: [
       {

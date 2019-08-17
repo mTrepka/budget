@@ -2,6 +2,8 @@ import {Injectable} from '@angular/core';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {map} from 'rxjs/operators';
+import {UserService} from './user.service';
+import {Router} from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -10,13 +12,24 @@ export class AuthenticationService {
   private currentUserSubject: BehaviorSubject<string>;
   public currentUser: Observable<string>;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private user: UserService, private router: Router) {
     this.currentUserSubject = new BehaviorSubject<string>(localStorage.getItem('currentUser'));
     this.currentUser = this.currentUserSubject.asObservable();
   }
 
   public get currentUserValue(): string {
     return this.currentUserSubject.getValue();
+  }
+
+  loginViaToken(token) {
+    localStorage.setItem('token', 'Bearer ' + token);
+    return this.user.getUsernameAndToken().subscribe(e => {
+      this.currentUserSubject.next(e.username);
+      localStorage.setItem('currentUser', e.username);
+      localStorage.setItem('token', 'Bearer ' + e.token);
+      this.router.navigate(['/']);
+    });
+
   }
 
   login(user: string, pass: string) {

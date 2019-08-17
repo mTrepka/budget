@@ -40,4 +40,8 @@ export class UserService {
   getUserSecuritylog() {
     return this.http.get('http://localhost:8080/user/security/log/');
   }
+
+  getUsernameAndToken() {
+    return this.http.get('http://localhost:8080/user/info-token');
+  }
 }
