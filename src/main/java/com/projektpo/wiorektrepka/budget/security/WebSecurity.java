@@ -1,6 +1,12 @@
 package com.projektpo.wiorektrepka.budget.security;
 
 
+import com.projektpo.wiorektrepka.budget.security.jwt.JWTAuthenticationFilter;
+import com.projektpo.wiorektrepka.budget.security.jwt.JWTAuthorizationFilter;
+import com.projektpo.wiorektrepka.budget.security.oauth2.user.CustomOAuth2UserService;
+import com.projektpo.wiorektrepka.budget.security.oauth2.HttpCookieOAuth2AuthorizationRequestRepository;
+import com.projektpo.wiorektrepka.budget.security.oauth2.OAuth2AuthenticationFailureHandler;
+import com.projektpo.wiorektrepka.budget.security.oauth2.OAuth2AuthenticationSuccessHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,7 +27,14 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 public class WebSecurity extends WebSecurityConfigurerAdapter {
     private final CustomUserDetailsService customUserDetailsService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
-
+    private final CustomOAuth2UserService customOAuth2UserService;
+    private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
+    private final OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler;
+    //private final TokenAuthenticationFilter tokenAuthenticationFilter;
+        @Bean
+    public HttpCookieOAuth2AuthorizationRequestRepository cookieAuthorizationRequestRepository() {
+        return new HttpCookieOAuth2AuthorizationRequestRepository();
+    }
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
@@ -34,6 +47,23 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
                 .addFilter(new JWTAuthenticationFilter(authenticationManager()))
                 .addFilter(new JWTAuthorizationFilter(authenticationManager()))
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+            oauth2Client(http);
+    }
+
+
+    private void oauth2Client(HttpSecurity http) throws Exception {
+            http.oauth2Login()
+                .authorizationEndpoint()
+                .authorizationRequestRepository(cookieAuthorizationRequestRepository())
+                .and()
+                .redirectionEndpoint()
+                .baseUri("/oauth2/callback/*")
+                .and()
+                .userInfoEndpoint()
+                .userService(customOAuth2UserService)//Ustawic wczytywanie uzytkownika konfiguracje itp
+                .and()
+                .successHandler(oAuth2AuthenticationSuccessHandler)
+                .failureHandler(oAuth2AuthenticationFailureHandler);
     }
 
     @Override

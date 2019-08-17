@@ -1,4 +1,4 @@
-package com.projektpo.wiorektrepka.budget.security;
+package com.projektpo.wiorektrepka.budget.security.listener;
 
 import com.projektpo.wiorektrepka.budget.service.LogService;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +17,7 @@ public class AuthenticationSuccessListener implements ApplicationListener<Authen
 
 	@Override
 	public void onApplicationEvent(AuthenticationSuccessEvent event) {
-		logService.logSuccessUserAuthentication(request.getRemoteAddr(), event.getAuthentication().getPrincipal());
+		//logService.logSuccessUserAuthentication(request.getRemoteAddr(), event.getAuthentication().getPrincipal());
 
 	}
 }

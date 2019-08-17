@@ -10,8 +10,8 @@ import java.util.Set;
 @Data
 @Entity
 public class User {
-    @GeneratedValue
     @Id
+    @GeneratedValue
     private int userId;
     private String uName;
     private String surname;

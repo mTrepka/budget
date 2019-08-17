@@ -15,12 +15,12 @@ public class Event {
     private int moneyId;
     private String evName;
     private String type;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private Category category;
     private Date eventDate;
     @CreationTimestamp
     private Date creationDate;
     private int value;
-    @ManyToOne(targetEntity = User.class, fetch = FetchType.LAZY)
+    @ManyToOne(targetEntity = User.class, fetch = FetchType.EAGER)
     private User owner;
 }
