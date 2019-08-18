@@ -1,10 +1,9 @@
 package com.projektpo.wiorektrepka.budget.security.jwt;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.projektpo.wiorektrepka.budget.domain.User;
 import com.projektpo.wiorektrepka.budget.security.util.SecurityConstants;
+import com.projektpo.wiorektrepka.budget.security.util.TokenFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -17,7 +16,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 
 @RequiredArgsConstructor
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
@@ -46,10 +44,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 	                                        FilterChain chain,
 	                                        Authentication auth) {
 
-		String token = JWT.create()
-				.withSubject(((org.springframework.security.core.userdetails.User) auth.getPrincipal()).getUsername())
-				.withExpiresAt(new Date(System.currentTimeMillis() + SecurityConstants.EXPIRATION_TIME+1))
-				.sign(Algorithm.HMAC512(SecurityConstants.SECRET.getBytes()));
+		String token = TokenFactory.createToken(auth);
 		res.addHeader(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + token);
 		res.addHeader("Access-Control-Expose-Headers", "Authorization");
 	}

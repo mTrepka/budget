@@ -21,3 +21,10 @@ spring:
             scope:
               - email
               - profile
+          facebook:
+            clientId: 429668214310991
+            clientSecret: 1f0f4aff012d4e96d7706f3f79e7cd9f
+            redirectUriTemplate: "{baseUrl}/oauth2/callback/{registrationId}"
+            scope:
+              - email
+              - public_profile
