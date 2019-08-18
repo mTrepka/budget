@@ -24,8 +24,11 @@ export class AuthenticationService {
   loginViaToken(token) {
     localStorage.setItem('token', 'Bearer ' + token);
     return this.user.getUsernameAndToken().subscribe(e => {
+      // @ts-ignore
       this.currentUserSubject.next(e.username);
+      // @ts-ignore
       localStorage.setItem('currentUser', e.username);
+      // @ts-ignore
       localStorage.setItem('token', 'Bearer ' + e.token);
       this.router.navigate(['/']);
     });
