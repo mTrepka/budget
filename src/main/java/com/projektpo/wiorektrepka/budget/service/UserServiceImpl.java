@@ -1,7 +1,10 @@
 package com.projektpo.wiorektrepka.budget.service;
 
+import com.projektpo.wiorektrepka.budget.domain.AppEvent;
+import com.projektpo.wiorektrepka.budget.domain.CodeEvent;
 import com.projektpo.wiorektrepka.budget.domain.FormUser;
 import com.projektpo.wiorektrepka.budget.domain.User;
+import com.projektpo.wiorektrepka.budget.mail.service.MailService;
 import com.projektpo.wiorektrepka.budget.repository.UserRepository;
 import com.projektpo.wiorektrepka.budget.security.oauth2.user.OAuth2UserInfo;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +22,8 @@ public class UserServiceImpl implements UserService{
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final RoleService roleService;
+    private final MailService mailService;
+    private final CodeEventService codeEventService;
 
     @Override
     public User getCurrentUser() {
@@ -36,6 +41,11 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
+    public User findUserByEmail(String email) {
+        return userRepository.findUserByEmail(email);
+    }
+
+    @Override
     public User getCurrentUserFormatted() {
         User u = getCurrentUser();
         u.setPassword(null);
@@ -49,6 +59,7 @@ public class UserServiceImpl implements UserService{
         u.setPassword(bCryptPasswordEncoder.encode(u.getPassword()));
         userRepository.save(u);
     }
+
 
     @Override
     public boolean updateCurrentUser(FormUser user) {
@@ -82,7 +93,8 @@ public class UserServiceImpl implements UserService{
         if (!isUserWithThisEmail(user.getEmail()) && !isUserWithThisUsername(user.getUsername()) && user.getPass1().equals(user.getPass2())) {
             User u = getUserFromFormUser(user);
             u.getRoles().add(roleService.getUserRole());
-            userRepository.save(u);
+            userRepository.saveAndFlush(u);
+            mailService.sendWelcomeEmail(u);
         }
     }
 
@@ -107,7 +119,35 @@ public class UserServiceImpl implements UserService{
         user.setEventList(new ArrayList<>());
         user.setPassword(bCryptPasswordEncoder.encode(RandomString.make(10)));
         user.setRoles(new HashSet<>());
-        userRepository.save(user);
+        userRepository.saveAndFlush(user);
+        mailService.sendWelcomeEmail(user);
         return user;
     }
+
+    @Override
+    public boolean changePassword(CodeEvent ce, String newPassword) {
+        if (codeEventService.validCode(ce)) {
+            User u = userRepository.getOne((int) ce.getUserId());
+            u.setPassword(bCryptPasswordEncoder.encode(newPassword));
+            userRepository.save(u);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean restorePassword(String email) {
+
+        User u = userRepository.findUserByEmail(email);
+        if (u != null) {
+            CodeEvent ce = CodeEvent.builder()
+                    .setUserId(u.getUserId())
+                    .setAppEvent(AppEvent.forgottenPassword)
+                    .get();
+            codeEventService.saveCode(ce);
+            mailService.sendForgotPasswordByEmail(u, ce.getCode());
+        }
+        return false;
+    }
+
 }

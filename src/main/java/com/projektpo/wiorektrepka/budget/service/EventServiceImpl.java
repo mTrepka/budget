@@ -80,6 +80,7 @@ public class EventServiceImpl implements EventService {
         return eventRepository.countEventsByEventDateBetweenAndOwner(Date.valueOf(startDate),Date.valueOf(endDate),userService.getCurrentUser());
     }
 
+
     public boolean checkUserEvent(Optional<Event> o, Integer id) {
         return id != null && o.isPresent();
     }

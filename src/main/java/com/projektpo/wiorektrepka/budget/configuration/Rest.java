@@ -9,9 +9,12 @@ import com.projektpo.wiorektrepka.budget.service.CategoryService;
 import com.projektpo.wiorektrepka.budget.service.EventService;
 import com.projektpo.wiorektrepka.budget.service.LogService;
 import com.projektpo.wiorektrepka.budget.service.UserService;
+import com.projektpo.wiorektrepka.budget.util.form.NewPasswordPojo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Email;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -135,4 +138,18 @@ public class Rest {
         map.put("token",token);
         return map;
     }
+
+    @PostMapping("/reset-password")
+    public boolean restorePassword(@Valid @Email String email) {
+        return userService.restorePassword(email);
+    }
+
+    @PostMapping("/change-forgotten-password")
+    public boolean changePassword(@Valid CodeEvent ce, @Valid NewPasswordPojo newPassword) {
+        if (newPassword.getNewPassword().equals(newPassword.getRepeatPassword()))
+            return userService.changePassword(ce, newPassword.getNewPassword());
+        return false;
+    }
+
+
 }
