@@ -3,10 +3,10 @@ package com.projektpo.wiorektrepka.budget.security;
 
 import com.projektpo.wiorektrepka.budget.security.jwt.JWTAuthenticationFilter;
 import com.projektpo.wiorektrepka.budget.security.jwt.JWTAuthorizationFilter;
-import com.projektpo.wiorektrepka.budget.security.oauth2.user.CustomOAuth2UserService;
 import com.projektpo.wiorektrepka.budget.security.oauth2.HttpCookieOAuth2AuthorizationRequestRepository;
 import com.projektpo.wiorektrepka.budget.security.oauth2.OAuth2AuthenticationFailureHandler;
 import com.projektpo.wiorektrepka.budget.security.oauth2.OAuth2AuthenticationSuccessHandler;
+import com.projektpo.wiorektrepka.budget.security.oauth2.user.CustomOAuth2UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -40,6 +40,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 
         http.cors().and().csrf().disable().authorizeRequests()
                 .antMatchers("/register").permitAll()
+                .antMatchers("/**").permitAll()
                 .antMatchers("/email/").permitAll()
                 .antMatchers("/username/").permitAll()
                 .anyRequest().authenticated()

@@ -17,7 +17,7 @@ public class AuthenticationSuccessListener implements ApplicationListener<Authen
 
 	@Override
 	public void onApplicationEvent(AuthenticationSuccessEvent event) {
-		//logService.logSuccessUserAuthentication(request.getRemoteAddr(), event.getAuthentication().getPrincipal());
+		logService.logSuccessUserAuthentication(request.getRemoteAddr(), event.getAuthentication().getPrincipal());
 
 	}
 }

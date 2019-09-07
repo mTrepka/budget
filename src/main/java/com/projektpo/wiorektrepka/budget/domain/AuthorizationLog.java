@@ -16,7 +16,8 @@ public class AuthorizationLog {
 	private long id;
 	private String user;
 	private String ip;
-	private String type;
+	private boolean success;
+	private Type type;
 	@CreationTimestamp
 	private Timestamp date;
 }

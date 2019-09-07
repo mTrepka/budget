@@ -2,6 +2,7 @@ package com.projektpo.wiorektrepka.budget.service;
 
 
 import com.projektpo.wiorektrepka.budget.domain.AuthorizationLog;
+import com.projektpo.wiorektrepka.budget.domain.Type;
 import com.projektpo.wiorektrepka.budget.repository.AuthorizationLogRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.User;
@@ -17,20 +18,30 @@ public class LogServiceImpl implements LogService {
 
 	@Override
 	public void logFailureUserAuthentication(String remoteAddr, Object principal) {
-		AuthorizationLog log = new AuthorizationLog();
-		log.setType("fail");
-		log.setUser((String) principal);
-		log.setIp(remoteAddr);
+		AuthorizationLog log = generateLog(remoteAddr, principal);
+		log.setSuccess(false);
 		authorizationLogRepository.save(log);
 	}
 
 	@Override
 	public void logSuccessUserAuthentication(String remoteAddr, Object principal) {
-		AuthorizationLog log = new AuthorizationLog();
-		log.setType("success");
-		log.setUser(((User) principal).getUsername());
-		log.setIp(remoteAddr);
+		AuthorizationLog log = generateLog(remoteAddr, principal);
+		log.setSuccess(true);
 		authorizationLogRepository.save(log);
+	}
+
+	private AuthorizationLog generateLog(String remoteAddr, Object principal) {
+		AuthorizationLog log = new AuthorizationLog();
+		try {
+			log.setUser(((User) principal).getUsername());
+			log.setType(Type.login);
+		} catch (Exception e) {
+			com.projektpo.wiorektrepka.budget.security.oauth2.user.UserPrincipal u = ((com.projektpo.wiorektrepka.budget.security.oauth2.user.UserPrincipal) principal);
+			log.setUser(userService.findUserByEmail(u.getEmail()).getUsername());
+			log.setType(Type.social);
+		}
+		log.setIp(remoteAddr);
+		return log;
 	}
 
 	@Override
