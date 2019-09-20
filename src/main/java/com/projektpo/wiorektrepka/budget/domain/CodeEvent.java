@@ -4,6 +4,8 @@ import com.projektpo.wiorektrepka.budget.util.CodeEventBuilder;
 import lombok.Data;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Data
@@ -12,9 +14,12 @@ public class CodeEvent {
 	@Id
 	@Column(name = "code_event_id")
 	private long codeEventId;
+	@NotEmpty
 	private String code;
+	@NotNull
 	private AppEvent event;
-	private long userId;
+	@NotNull
+	private Long userId;
 
 	public static CodeEventBuilder builder() {
 		return new CodeEventBuilder();

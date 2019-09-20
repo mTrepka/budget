@@ -5,6 +5,8 @@ import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.sql.Date;
 
 @Entity
@@ -13,14 +15,20 @@ public class Event {
     @GeneratedValue
     @Id
     private int moneyId;
-    private String evName;
-    private String type;
-    @ManyToOne(fetch = FetchType.EAGER)
-    private Category category;
-    private Date eventDate;
+	@NotEmpty
+	private String evName;
+	@NotEmpty
+	private String type;
+	@NotNull
+	@ManyToOne(fetch = FetchType.EAGER)
+	private Category category;
+	@NotNull
+	private Date eventDate;
     @CreationTimestamp
     private Date creationDate;
-    private int value;
+	@NotNull
+	private Integer value;
+	@NotEmpty
     @ManyToOne(targetEntity = User.class, fetch = FetchType.EAGER)
     private User owner;
 }
