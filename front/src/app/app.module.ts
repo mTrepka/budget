@@ -40,6 +40,8 @@ import {ErrorInterceptor} from './helpers/error.interceptor';
 import {RegistrationComponent} from './pages/registration/registration.component';
 import {SecurityLogComponent} from './components/security-log/security-log.component';
 import {SocialLoginComponent} from './pages/social-login/social-login.component';
+import {ForgotpasswordComponent} from './pages/forgotpassword/forgotpassword.component';
+import {NewPasswordComponent} from './pages/new-password/new-password.component';
 
 @NgModule({
   declarations: [
@@ -61,7 +63,9 @@ import {SocialLoginComponent} from './pages/social-login/social-login.component'
     LoginComponent,
     RegistrationComponent,
     SecurityLogComponent,
-    SocialLoginComponent
+    SocialLoginComponent,
+    ForgotpasswordComponent,
+    NewPasswordComponent
   ],
   imports: [
     MatRadioModule,

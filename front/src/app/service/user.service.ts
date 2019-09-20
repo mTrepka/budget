@@ -37,11 +37,23 @@ export class UserService {
     return this.http.get<boolean>('http://localhost:8080/username/?username=' + username);
   }
 
+
   getUserSecuritylog() {
     return this.http.get('http://localhost:8080/user/security/log/');
   }
 
   getUsernameAndToken() {
     return this.http.get('http://localhost:8080/user/info-token');
+  }
+
+  forgotPassword(email) {
+    return this.http.post('http://localhost:8080/reset-password', email, this.httpOptions);
+  }
+
+  changePassword(event: { code: string; event: string; userId: string }, pass: { repeatPassword: any; newPassword: any }) {
+    return this.http.post('http://localhost:8080/change-forgotten-password', {
+      newPassword: pass,
+      code: event
+    }, this.httpOptions);
   }
 }
