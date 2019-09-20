@@ -13,7 +13,7 @@ public class CodeEventServiceImpl implements CodeEventService {
 	@Override
 	public boolean validCode(CodeEvent codeEvent) {
 		CodeEvent ce = codeEventRepository.findById(codeEvent.getCodeEventId()).get();
-		return ce.getCode().equals(codeEvent.getCode()) && ce.getEvent() == codeEvent.getEvent();
+		return codeEvent.getUserId() == ce.getUserId();
 	}
 
 	@Override

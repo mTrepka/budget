@@ -43,6 +43,8 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
                 .antMatchers("/**").permitAll()
                 .antMatchers("/email/").permitAll()
                 .antMatchers("/username/").permitAll()
+		        .antMatchers("/reset-password/").permitAll()
+		        .antMatchers("/change-forgotten-password/").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .addFilter(new JWTAuthenticationFilter(authenticationManager()))

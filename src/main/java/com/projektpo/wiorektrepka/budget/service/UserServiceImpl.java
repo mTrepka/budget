@@ -13,6 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.HashSet;
 
@@ -125,9 +126,10 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
+    @Transactional
     public boolean changePassword(CodeEvent ce, String newPassword) {
         if (codeEventService.validCode(ce)) {
-            User u = userRepository.getOne((int) ce.getUserId());
+	        User u = userRepository.getOne(ce.getUserId().intValue());
             u.setPassword(bCryptPasswordEncoder.encode(newPassword));
             userRepository.save(u);
             return true;
@@ -137,7 +139,7 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public boolean restorePassword(String email) {
-
+	    System.out.println(email);
         User u = userRepository.findUserByEmail(email);
         if (u != null) {
             CodeEvent ce = CodeEvent.builder()
@@ -145,6 +147,7 @@ public class UserServiceImpl implements UserService{
                     .setAppEvent(AppEvent.forgottenPassword)
                     .get();
             codeEventService.saveCode(ce);
+	        System.out.println(ce.toString());
             mailService.sendForgotPasswordByEmail(u, ce.getCode());
         }
         return false;

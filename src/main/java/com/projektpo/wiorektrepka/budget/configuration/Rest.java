@@ -3,6 +3,7 @@ package com.projektpo.wiorektrepka.budget.configuration;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.projektpo.wiorektrepka.budget.domain.*;
 import com.projektpo.wiorektrepka.budget.security.util.SecurityConstants;
 import com.projektpo.wiorektrepka.budget.service.CategoryService;
@@ -13,7 +14,6 @@ import com.projektpo.wiorektrepka.budget.util.form.NewPasswordPojo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import java.util.Date;
 import java.util.HashMap;
@@ -140,15 +140,18 @@ public class Rest {
     }
 
     @PostMapping("/reset-password")
-    public boolean restorePassword(@Valid @Email String email) {
+    public boolean restorePassword(@RequestBody @Email String email) {
         return userService.restorePassword(email);
     }
 
-    @PostMapping("/change-forgotten-password")
-    public boolean changePassword(@Valid CodeEvent ce, @Valid NewPasswordPojo newPassword) {
+	@PostMapping("/change-forgotten-password")
+	public boolean changePassword(@RequestBody Map<String, Map<String, String>> map) {
+		ObjectMapper objectMapper = new ObjectMapper();
+		NewPasswordPojo newPassword = objectMapper.convertValue(map.get("newPassword"), NewPasswordPojo.class);
+		CodeEvent ce = objectMapper.convertValue(map.get("code"), CodeEvent.class);
         if (newPassword.getNewPassword().equals(newPassword.getRepeatPassword()))
             return userService.changePassword(ce, newPassword.getNewPassword());
-        return false;
+		return true;
     }
 
 

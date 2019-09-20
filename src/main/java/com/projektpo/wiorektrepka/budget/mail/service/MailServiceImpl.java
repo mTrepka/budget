@@ -32,7 +32,7 @@ public class MailServiceImpl implements MailService {
 		SimpleMailMessage message = MailTemplate.builder()
 				.setTemplate(mailTemplateService.getTemplateByName("forgotPassword"))
 				.setUser(u)
-				.setUrl(UrlUtil.APP_URL + UrlUtil.FORGOTTEN_PASSWORD + code)
+				.setUrl(UrlUtil.APP_URL + UrlUtil.FORGOTTEN_PASSWORD + "?code=" + code + "&id=" + u.getUserId())
 				.get();
 		mailSender.send(message);
 	}
