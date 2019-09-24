@@ -21,7 +21,6 @@ public class AuthorizationLog {
 	private String user;
 	@NotEmpty
 	private String ip;
-	@NotEmpty
 	private boolean success;
 	@NotNull
 	private Type type;

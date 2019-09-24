@@ -1,0 +1,35 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/testb?autoReconnect=true&useSSL=true&serverTimezone=UTC
+    username: user
+    password: user
+  jpa:
+    show-sql: false
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5Dialect
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            clientId: 2
+            clientSecret: 5
+            redirectUriTemplate: "{baseUrl}/oauth2/callback/{registrationId}"
+            scope:
+              - email
+              - profile
+          facebook:
+            clientId: 4
+            clientSecret: 1
+            redirectUriTemplate: "{baseUrl}/oauth2/callback/{registrationId}"
+            scope:
+              - email
+              - public_profile
+
+management:
+  endpoint:
+    beans:
+      enabled: true
