@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CodeEventRepository extends JpaRepository<CodeEvent, Long> {
+	CodeEvent findByUserId(long userId);
 }

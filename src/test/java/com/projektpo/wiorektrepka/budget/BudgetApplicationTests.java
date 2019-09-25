@@ -1,9 +1,12 @@
 package com.projektpo.wiorektrepka.budget;
 
+import com.projektpo.wiorektrepka.budget.domain.CodeEvent;
 import com.projektpo.wiorektrepka.budget.domain.FormUser;
 import com.projektpo.wiorektrepka.budget.domain.Role;
 import com.projektpo.wiorektrepka.budget.domain.User;
+import com.projektpo.wiorektrepka.budget.repository.CodeEventRepository;
 import com.projektpo.wiorektrepka.budget.repository.UserRepository;
+import com.projektpo.wiorektrepka.budget.service.CodeEventService;
 import com.projektpo.wiorektrepka.budget.service.RoleService;
 import com.projektpo.wiorektrepka.budget.service.UserService;
 import org.junit.Test;
@@ -27,6 +30,10 @@ public class BudgetApplicationTests {
 	private UserService userService;
 	@Autowired
 	private UserRepository userRepository;
+	@Autowired
+	private CodeEventService codeEventService;
+	@Autowired
+	private CodeEventRepository codeEventRepository;
 
 	@Test
 	public void roleServiceTest() {
@@ -41,6 +48,9 @@ public class BudgetApplicationTests {
 		createUserTest();
 		isUserWithThisEmail();
 		isUserWithThisUsername();
+		registerUser();
+		changePassword();
+		restorePassword();
 	}
 
 	@Test
@@ -151,6 +161,50 @@ public class BudgetApplicationTests {
 		form.setPass2("pass2");
 		form.setEmail("newEmail@mail.com");
 	}
+
+	public void registerUser() {
+		FormUser form = new FormUser();
+		form.setUName("newName12");
+		form.setPassword("pass");
+		form.setSurname("surname");
+		form.setUsername("newUsername");
+		form.setPass1("pass1");
+		form.setPass2("pass1");
+		form.setEmail("newEmail12@mail.com");
+		userService.registerUser(form);
+		User u = userService.findUserByEmail("newEmail12@mail.com");
+		assertNotNull(u);
+		assertTrue(u.getRoles().contains(roleService.getUserRole()));
+	}
+
+	private void restorePassword() {
+		User u = new User();
+		u.setPassword("pass");
+		u.setUsername("userrest");
+		u.setSurname("surname");
+		u.setEmail("emailrest@mock.com");
+		u.setUName("uname");
+		userRepository.save(u);
+		assertNull(codeEventRepository.findByUserId(u.getUserId()));
+		userService.restorePassword("emailrest@mock.com");
+		assertNotNull(codeEventRepository.findByUserId(u.getUserId()));
+	}
+
+	private void changePassword() {
+		User u = new User();
+		u.setPassword("pass");
+		u.setUsername("userchange");
+		u.setSurname("surname");
+		u.setEmail("emailchange@mock.com");
+		u.setUName("uname");
+		userRepository.save(u);
+		String pass = u.getPassword();
+		userService.restorePassword("emailchange@mock.com");
+		CodeEvent codeEvent = codeEventRepository.findByUserId(u.getUserId());
+		userService.changePassword(codeEvent, "aaaa");
+		assertNotEquals(pass, userService.findUserByEmail("emailchange@mock.com").getPassword());
+	}
+
 
 
 }
