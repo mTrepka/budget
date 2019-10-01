@@ -28,7 +28,8 @@ public class Event {
     private Date creationDate;
 	@NotNull
 	private Integer value;
-	@NotEmpty
-    @ManyToOne(targetEntity = User.class, fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "user_id")
     private User owner;
+
 }

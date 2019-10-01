@@ -1,14 +1,11 @@
 package com.projektpo.wiorektrepka.budget;
 
-import com.projektpo.wiorektrepka.budget.domain.CodeEvent;
-import com.projektpo.wiorektrepka.budget.domain.FormUser;
-import com.projektpo.wiorektrepka.budget.domain.Role;
-import com.projektpo.wiorektrepka.budget.domain.User;
+import com.projektpo.wiorektrepka.budget.domain.*;
 import com.projektpo.wiorektrepka.budget.repository.CodeEventRepository;
+import com.projektpo.wiorektrepka.budget.repository.EventRepository;
 import com.projektpo.wiorektrepka.budget.repository.UserRepository;
-import com.projektpo.wiorektrepka.budget.service.CodeEventService;
-import com.projektpo.wiorektrepka.budget.service.RoleService;
-import com.projektpo.wiorektrepka.budget.service.UserService;
+import com.projektpo.wiorektrepka.budget.service.*;
+import com.projektpo.wiorektrepka.budget.util.EventBuilder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +14,9 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.transaction.Transactional;
+import java.sql.Date;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import static org.junit.Assert.*;
@@ -34,6 +34,12 @@ public class BudgetApplicationTests {
 	private CodeEventService codeEventService;
 	@Autowired
 	private CodeEventRepository codeEventRepository;
+	@Autowired
+	private EventService eventService;
+	@Autowired
+	private EventRepository eventRepository;
+	@Autowired
+	private CategoryService categoryService;
 
 	@Test
 	public void roleServiceTest() {
@@ -62,6 +68,112 @@ public class BudgetApplicationTests {
 		getCurrentUserFormatted();
 		getCurrentUserNick();
 		updateCurrentUser();
+	}
+
+	@Test
+	@Transactional
+	@WithMockUser(username = "event", authorities = {"ADMIN", "USER"})
+	public void eventServiceTest() {
+		initEventServiceTestWithMockUser();
+		getUserEventById();//
+		addNewEvent();//
+		getEventsBetweenDateCurrentUser();
+		updateEvent();//
+		deleteEvent();//
+		countEventsBetweenDateCurrentUser();//
+	}
+
+	private void countEventsBetweenDateCurrentUser() {
+		Category cat1 = categoryService.getById(2);
+		Event e = EventBuilder.builder().setType("t").setEvName("name").setValue(500).setCategory(cat1).setEventDate(Date.valueOf(LocalDate.now().plusDays(2))).getEvent();
+		Event e1 = EventBuilder.builder().setType("t").setEvName("name").setValue(500).setCategory(cat1).setEventDate(Date.valueOf(LocalDate.now().plusDays(3))).getEvent();
+		Event e2 = EventBuilder.builder().setType("t").setEvName("name").setValue(500).setCategory(cat1).setEventDate(Date.valueOf(LocalDate.now().plusDays(4))).getEvent();
+		Event e3 = EventBuilder.builder().setType("t").setEvName("name").setValue(500).setCategory(cat1).setEventDate(Date.valueOf(LocalDate.now().plusDays(5))).getEvent();
+		Event e4 = EventBuilder.builder().setType("t").setEvName("name").setValue(500).setCategory(cat1).setEventDate(Date.valueOf(LocalDate.now().plusDays(4))).getEvent();
+		int countedEvents = eventService.countEventsBetweenDateCurrentUser(Date.valueOf(LocalDate.now().plusDays(2)).toString(), Date.valueOf(LocalDate.now().plusDays(5)).toString());
+		Arrays.asList(e, e1, e2, e3).forEach(b -> eventService.addNewEvent(b));
+		eventRepository.saveAndFlush(e4);//with no user!!!
+		int countedEventsAfterSave = eventService.countEventsBetweenDateCurrentUser(Date.valueOf(LocalDate.now().plusDays(2)).toString(), Date.valueOf(LocalDate.now().plusDays(5)).toString());
+		assertNotEquals(countedEvents, countedEventsAfterSave);
+		assertEquals(countedEvents + 4, countedEventsAfterSave);
+	}
+
+	private void deleteEvent() {
+		Event e = new Event();
+		e.setEventDate(Date.valueOf(LocalDate.now()));
+		Category c = categoryService.getById(1);
+		e.setCategory(c);
+		e.setEvName("name");
+		e.setType("exp");
+		e.setValue(500);
+		eventService.addNewEvent(e);
+		assertNotNull(eventService.getUserEventById(e.getMoneyId()));
+		eventService.deleteEvent(e.getMoneyId());
+		assertNull(eventService.getUserEventById(e.getMoneyId()));
+	}
+
+	private void updateEvent() {
+		Event e = EventBuilder.builder()
+				.setEventDate(Date.valueOf(LocalDate.now().minusDays(5)))
+				.setCategory(categoryService.getById(1))
+				.setOwner(userService.getCurrentUser())
+				.setValue(500)
+				.setEvName("name")
+				.setType("type")
+				.getEvent();
+		eventRepository.saveAndFlush(e);
+		e.setValue(700);
+		e.setCategory(categoryService.getById(2));
+		e.setEvName("anotherName");
+		eventService.updateEvent(e);
+		Event another = eventService.getUserEventById(e.getMoneyId());
+		assertEquals(another.getValue(), (Integer) 700);
+		assertEquals(another.getCategory().getCategoryId(), 2);
+		assertEquals(another.getEvName(), "anotherName");
+		assertEquals(another.getEventDate().toString(), Date.valueOf(LocalDate.now().minusDays(5)).toString());
+		assertEquals(another.getCreationDate().toString(), Date.valueOf(LocalDate.now()).toString());
+	}
+
+	private void getEventsBetweenDateCurrentUser() {
+		Category cat1 = categoryService.getById(1);
+		Event e = EventBuilder.builder().setType("t").setEvName("name").setValue(500).setCategory(cat1).setEventDate(Date.valueOf(LocalDate.now().plusDays(2))).getEvent();
+		Event e1 = EventBuilder.builder().setType("t").setEvName("name").setValue(500).setCategory(cat1).setEventDate(Date.valueOf(LocalDate.now().plusDays(3))).getEvent();
+		Event e2 = EventBuilder.builder().setType("t").setEvName("name").setValue(500).setCategory(cat1).setEventDate(Date.valueOf(LocalDate.now().plusDays(4))).getEvent();
+		Event e3 = EventBuilder.builder().setType("t").setEvName("name").setValue(500).setCategory(cat1).setEventDate(Date.valueOf(LocalDate.now().plusDays(5))).getEvent();
+		Event e4 = EventBuilder.builder().setType("t").setEvName("name").setValue(500).setCategory(cat1).setEventDate(Date.valueOf(LocalDate.now().plusDays(4))).getEvent();
+		int countedEvents = eventService.getEventsBetweenDateCurrentUser(Date.valueOf(LocalDate.now().plusDays(2)).toString(), Date.valueOf(LocalDate.now().plusDays(5)).toString()).size();
+		Arrays.asList(e, e1, e2, e3).forEach(b -> eventService.addNewEvent(b));
+		eventRepository.saveAndFlush(e4);//with no user!!!
+		int countedEventsAfterSave = eventService.getEventsBetweenDateCurrentUser(Date.valueOf(LocalDate.now().plusDays(2)).toString(), Date.valueOf(LocalDate.now().plusDays(5)).toString()).size();
+		assertNotEquals(countedEvents, countedEventsAfterSave);
+		assertEquals(countedEvents + 4, countedEventsAfterSave);
+	}
+
+	private void addNewEvent() {
+		Event e = new Event();
+		e.setEventDate(Date.valueOf(LocalDate.now()));
+		Category c = categoryService.getById(1);
+		e.setCategory(c);
+		e.setEvName("name");
+		e.setType("exp");
+		e.setValue(500);
+		eventService.addNewEvent(e);
+		assertNotNull(eventService.getUserEventById(e.getMoneyId()));
+	}
+
+	private void getUserEventById() {
+		Event e = new Event();
+		e.setEventDate(Date.valueOf(LocalDate.now()));
+		Category c = categoryService.getById(1);
+		e.setCategory(c);
+		e.setEvName("name");
+		e.setType("exp");
+		e.setValue(500);
+		eventService.addNewEvent(e);
+		assertNotNull(eventService.getUserEventById(e.getMoneyId()));
+		e.setOwner(null);
+		eventRepository.saveAndFlush(e);
+		assertNull(eventService.getUserEventById(e.getMoneyId()));
 	}
 
 
@@ -125,6 +237,17 @@ public class BudgetApplicationTests {
 		assertTrue(userService.isUserWithThisUsername("username5"));
 	}
 
+	public void initEventServiceTestWithMockUser() {
+		User u = new User();
+		u.setPassword("pass");
+		u.setEventList(new ArrayList<>());
+		u.setUsername("event");
+		u.setSurname("surname");
+		u.setEmail("event@mock.com");
+		u.setUName("uname");
+		userRepository.saveAndFlush(u);
+	}
+
 	public void initUserServiceTestWithMockUser() {
 		User u = new User();
 		u.setPassword("pass");
@@ -132,7 +255,7 @@ public class BudgetApplicationTests {
 		u.setSurname("surname");
 		u.setEmail("email@mock.com");
 		u.setUName("uname");
-		userRepository.save(u);
+		userRepository.saveAndFlush(u);
 	}
 
 	public void getCurrentUser() {

@@ -20,39 +20,36 @@ public class EventServiceImpl implements EventService {
     @Override
     public Event getUserEventById(Integer id) {
         Optional<Event> o = eventRepository.findById(id);
-        if (checkUserEvent(o, id)) {
-            Event m = o.get();
-            if (m.getOwner().getUName().equals(userService.getCurrentUser().getUName()))
-                return m;
+        if (o.isPresent()) {
+            try {
+                Event m = o.get();
+                String uName = userService.getCurrentUser().getUName();
+                String eventUName = m.getOwner().getUName();
+                System.out.println(eventUName);
+                if (uName.equals(eventUName))
+                    return m;
+            } catch (Exception e) {
+                return null;
+            }
         }
         return null;
     }
 
     @Override
     public void addNewEvent(Event event) {
-        Event m = generateEventFromBody(event);
-        m.setOwner(userService.getCurrentUser());
-        eventRepository.saveAndFlush(m);
+        event.setOwner(userService.getCurrentUser());
+        eventRepository.saveAndFlush(event);
     }
 
     @Override
     public List<Event> getEventsBetweenDateCurrentUser(String startDate, String endDate) {
-        return eventRepository.findAllByEventDateBetweenAndOwner(Date.valueOf(startDate),Date.valueOf(endDate),userService.getCurrentUser());
-    }
-    private Event generateEventFromBody(Event event) {
-        Event m = new Event();
-        m.setEvName(event.getEvName());
-        m.setType(event.getType());
-        m.setValue(event.getValue());
-        m.setCategory(event.getCategory());
-        m.setEventDate(Date.valueOf(event.getEventDate().toLocalDate().plusDays(1)));
-        return m;
+        return eventRepository.findAllByEventDateBetweenAndOwner(Date.valueOf(startDate), Date.valueOf(endDate), userService.getCurrentUser());
     }
 
     @Override
     public void deleteEvent(Integer id) {
         Optional<Event> o = eventRepository.findById(id);
-        if (checkUserEvent(o, id)) {
+        if (o.isPresent() && userService.getCurrentUser().getUserId() == (o.get().getOwner().getUserId())) {
             eventRepository.deleteById(id);
         }
     }
@@ -77,11 +74,11 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public Integer countEventsBetweenDateCurrentUser(String startDate, String endDate) {
-        return eventRepository.countEventsByEventDateBetweenAndOwner(Date.valueOf(startDate),Date.valueOf(endDate),userService.getCurrentUser());
+        return eventRepository.countEventsByEventDateBetweenAndOwner(Date.valueOf(startDate), Date.valueOf(endDate), userService.getCurrentUser());
     }
 
 
-    public boolean checkUserEvent(Optional<Event> o, Integer id) {
-        return id != null && o.isPresent();
+    public boolean checkUserEvent(Integer id) {
+        return id != null && userService.getCurrentUser().getUserId() == id;
     }
 }
