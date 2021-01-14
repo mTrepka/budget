@@ -2,11 +2,10 @@ package com.projektpo.wiorektrepka.budget.service;
 
 import com.projektpo.wiorektrepka.budget.domain.AppEvent;
 import com.projektpo.wiorektrepka.budget.domain.CodeEvent;
-import com.projektpo.wiorektrepka.budget.domain.FormUser;
+import com.projektpo.wiorektrepka.budget.dto.FormUser;
 import com.projektpo.wiorektrepka.budget.domain.User;
 import com.projektpo.wiorektrepka.budget.mail.service.MailService;
 import com.projektpo.wiorektrepka.budget.repository.UserRepository;
-import com.projektpo.wiorektrepka.budget.security.oauth2.user.OAuth2UserInfo;
 import lombok.RequiredArgsConstructor;
 import net.bytebuddy.utility.RandomString;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,7 +18,7 @@ import java.util.HashSet;
 
 @Service("userService")
 @RequiredArgsConstructor
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final RoleService roleService;
@@ -65,17 +64,18 @@ public class UserServiceImpl implements UserService{
     @Override
     public boolean updateCurrentUser(FormUser user) {
         User u = getCurrentUser();
-	    if (bCryptPasswordEncoder.matches(user.getPassword(), u.getPassword())) {
-            if (!user.getSurname().isEmpty())
+        if (user.getPassword() != null && bCryptPasswordEncoder.matches(user.getPassword(), u.getPassword())) {
+            if (user.getSurname() != null)
                 u.setSurname(user.getSurname());
-            if (!user.getUName().isEmpty())
+            if (user.getUName() != null)
                 u.setUName(user.getUName());
-            if (!user.getUsername().isEmpty())
+            if (user.getUsername() != null)
                 u.setUsername(user.getUsername());
-            if (!user.getPass1().isEmpty() && user.getPass1().equals(user.getPass2()))
-	            u.setPassword(bCryptPasswordEncoder.encode(user.getPass1()));
+            if (user.getPass1() != null && user.getPass2() != null && user.getPass1().equals(user.getPass2()))
+                u.setPassword(bCryptPasswordEncoder.encode(user.getPass1()));
+            userRepository.save(u);
+            return true;
         }
-        userRepository.save(u);
         return false;
     }
 
@@ -110,26 +110,12 @@ public class UserServiceImpl implements UserService{
         return u;
     }
 
-    @Override
-    public User registerUser(OAuth2UserInfo oAuth2UserInfo) {
-        User user = new User();
-        user.setUName(oAuth2UserInfo.getName());
-        user.setUsername(oAuth2UserInfo.getEmail());
-        user.setSurname(" ");
-        user.setEmail(oAuth2UserInfo.getEmail());
-        user.setEventList(new ArrayList<>());
-        user.setPassword(bCryptPasswordEncoder.encode(RandomString.make(10)));
-        user.setRoles(new HashSet<>());
-        userRepository.saveAndFlush(user);
-        mailService.sendWelcomeEmail(user);
-        return user;
-    }
 
     @Override
     @Transactional
     public boolean changePassword(CodeEvent ce, String newPassword) {
         if (codeEventService.validCode(ce)) {
-	        User u = userRepository.getOne(ce.getUserId().intValue());
+            User u = userRepository.getOne(ce.getUserId().intValue());
             u.setPassword(bCryptPasswordEncoder.encode(newPassword));
             userRepository.save(u);
             return true;
@@ -139,7 +125,6 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public boolean restorePassword(String email) {
-	    System.out.println(email);
         User u = userRepository.findUserByEmail(email);
         if (u != null) {
             CodeEvent ce = CodeEvent.builder()
@@ -147,7 +132,6 @@ public class UserServiceImpl implements UserService{
                     .setAppEvent(AppEvent.forgottenPassword)
                     .get();
             codeEventService.saveCode(ce);
-	        System.out.println(ce.toString());
             mailService.sendForgotPasswordByEmail(u, ce.getCode());
         }
         return false;

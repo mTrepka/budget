@@ -12,9 +12,9 @@ import java.sql.Date;
 @Entity
 @Data
 public class Event {
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    private int moneyId;
+    private int id;
 	@NotEmpty
 	private String evName;
 	@NotEmpty
@@ -27,8 +27,8 @@ public class Event {
     @CreationTimestamp
     private Date creationDate;
 	@NotNull
-	private Integer value;
-	@NotEmpty
-    @ManyToOne(targetEntity = User.class, fetch = FetchType.EAGER)
+	private int value;
+	@NotNull
+    @ManyToOne(targetEntity = User.class, fetch = FetchType.EAGER,cascade = CascadeType.PERSIST)
     private User owner;
 }

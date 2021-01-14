@@ -1,11 +1,9 @@
 package com.projektpo.wiorektrepka.budget.configuration;
 
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.projektpo.wiorektrepka.budget.domain.*;
-import com.projektpo.wiorektrepka.budget.security.util.SecurityConstants;
+import com.projektpo.wiorektrepka.budget.dto.FormUser;
 import com.projektpo.wiorektrepka.budget.service.CategoryService;
 import com.projektpo.wiorektrepka.budget.service.EventService;
 import com.projektpo.wiorektrepka.budget.service.LogService;
@@ -13,10 +11,10 @@ import com.projektpo.wiorektrepka.budget.service.UserService;
 import com.projektpo.wiorektrepka.budget.util.form.NewPasswordPojo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import com.projektpo.wiorektrepka.budget.dto.User;
 
 import javax.validation.constraints.Email;
-import java.util.Date;
-import java.util.HashMap;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -31,34 +29,36 @@ public class Rest {
 
 
     @GetMapping("/event/")
-    public List<Event> getUserEvent(String category, String startDate, String endDate){
+    public List<com.projektpo.wiorektrepka.budget.dto.Event> getUserEvent(String category, String startDate, String endDate) {
         List<Event> events;
-        if(startDate!=null&&endDate!=null&&!startDate.equals(endDate))
-            events = eventService.getEventsBetweenDateCurrentUser(startDate,endDate);
-        else
+        if (startDate != null && endDate != null && !startDate.equals(endDate))
+            events = eventService.getEventsBetweenDateCurrentUser(startDate, endDate);
+        else if (startDate == null && endDate != null) {
+            events = eventService.getEventsEndDateCurrentUser(endDate);
+        } else if (startDate != null && endDate == null) {
+            events = eventService.getEventsStartDateCurrentUser(startDate);
+        } else {
             events = userService.getCurrentUser().getEventList();
-
-        if(category==null)
-        {
-            events.forEach(e -> {e.getCategory().setEventList(null);e.setOwner(null);});
-            return events;
         }
-        events.forEach(e -> e.setOwner(null));
-        return events.stream().filter(e -> e.getCategory().getName().equals(category)).collect(Collectors.toList());
+
+        if (category == null) {
+            return events.stream().map(com.projektpo.wiorektrepka.budget.dto.Event::from).collect(Collectors.toList());
+        }
+        return events.stream().filter(e -> e.getCategory().getName().equals(category)).map(com.projektpo.wiorektrepka.budget.dto.Event::from).collect(Collectors.toList());
     }
 
     @GetMapping("/event/count/")
-    public Integer countEventsByDate(String startDate, String endDate){
-        return eventService.countEventsBetweenDateCurrentUser(startDate,endDate);
+    public Integer countEventsByDate(@NotNull String startDate,@NotNull String endDate) {
+        return eventService.countEventsBetweenDateCurrentUser(startDate, endDate);
     }
 
     @GetMapping("/event/{id}")
-    public Event getUserEventById(@PathVariable("id") Integer id){
+    public Event getUserEventById(@PathVariable("id") Integer id) {
         return eventService.getUserEventById(id);
     }
 
     @PostMapping("/event/")
-    public void addNewEvent(@RequestBody Event event){
+    public void addNewEvent(@RequestBody com.projektpo.wiorektrepka.budget.dto.Event event) {
         eventService.addNewEvent(event);
     }
 
@@ -66,44 +66,31 @@ public class Rest {
     public void editEvent(@RequestBody Event event) {
         eventService.updateEvent(event);
     }
+
     @PostMapping("/event/delete/{id}")
-    public void deleteEvent(@PathVariable("id") Integer id){
+    public void deleteEvent(@PathVariable("id") Integer id) {
         eventService.deleteEvent(id);
     }
 
     @GetMapping("/category")
-    public List<Category> getAllCategory(){
+    public List<Category> getAllCategory() {
         return categoryService.getAll();
     }
 
     @GetMapping("/category/{id}")
-    public Category getCategoryById(@PathVariable Integer id){
+    public Category getCategoryById(@PathVariable Integer id) {
         return categoryService.getById(id);
     }
 
-    @PostMapping("/category/delete/{id}")
-    public void deleteCategory(@PathVariable("id") Integer id){
-        categoryService.deleteCategory(id);
-    }
-
-    @PostMapping("/category/edit/{id}")
-    public void editCategory(@PathVariable("id") Integer id,@RequestBody Category cat){
-        categoryService.editCategory(id, cat);
-    }
-
-    @PostMapping("/category/add")
-    public void addCategory(@RequestBody Category category){
-        categoryService.addNewCategory(category);
-    }
 
     @GetMapping("/user")
-    public User getCurrentUser(){
-        return userService.getCurrentUserFormatted();
+    public User getCurrentUser() {
+        return User.from(userService.getCurrentUserFormatted());
     }
 
     @PostMapping("/user/edit/")
     public boolean editUser(@RequestBody FormUser user) {
-	    return userService.updateCurrentUser(user);
+        return userService.updateCurrentUser(user);
     }
 
     @PostMapping("/register")
@@ -122,21 +109,8 @@ public class Rest {
     }
 
     @GetMapping("/user/security/log/")
-    public List<AuthorizationLog> getAuthLog(){
+    public List<AuthorizationLog> getAuthLog() {
         return logService.getCurrentUserAuthLog();
-    }
-
-    @GetMapping("/user/info-token")
-    public Map<String,String> getUsernameAndToken() {
-        Map<String,String> map = new HashMap<>();
-        String username = userService.getCurrentUserNick();
-        String token = JWT.create()
-                .withSubject(username)
-                .withExpiresAt(new Date(System.currentTimeMillis() + SecurityConstants.EXPIRATION_TIME))
-                .sign(Algorithm.HMAC512(SecurityConstants.SECRET.getBytes()));
-        map.put("username",username);
-        map.put("token",token);
-        return map;
     }
 
     @PostMapping("/reset-password")
@@ -144,14 +118,14 @@ public class Rest {
         return userService.restorePassword(email);
     }
 
-	@PostMapping("/change-forgotten-password")
-	public boolean changePassword(@RequestBody Map<String, Map<String, String>> map) {
-		ObjectMapper objectMapper = new ObjectMapper();
-		NewPasswordPojo newPassword = objectMapper.convertValue(map.get("newPassword"), NewPasswordPojo.class);
-		CodeEvent ce = objectMapper.convertValue(map.get("code"), CodeEvent.class);
+    @PostMapping("/change-forgotten-password")
+    public boolean changePassword(@RequestBody Map<String, Map<String, String>> map) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        NewPasswordPojo newPassword = objectMapper.convertValue(map.get("newPassword"), NewPasswordPojo.class);
+        CodeEvent ce = objectMapper.convertValue(map.get("code"), CodeEvent.class);
         if (newPassword.getNewPassword().equals(newPassword.getRepeatPassword()))
             return userService.changePassword(ce, newPassword.getNewPassword());
-		return true;
+        return true;
     }
 
 

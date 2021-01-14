@@ -6,7 +6,9 @@ import com.projektpo.wiorektrepka.budget.repository.EventRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,7 +31,7 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public void addNewEvent(Event event) {
+    public void addNewEvent(com.projektpo.wiorektrepka.budget.dto.Event event) {
         Event m = generateEventFromBody(event);
         m.setOwner(userService.getCurrentUser());
         eventRepository.saveAndFlush(m);
@@ -37,15 +39,27 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public List<Event> getEventsBetweenDateCurrentUser(String startDate, String endDate) {
-        return eventRepository.findAllByEventDateBetweenAndOwner(Date.valueOf(startDate),Date.valueOf(endDate),userService.getCurrentUser());
+        return eventRepository.findAllByEventDateIsBetweenAndOwner(Date.valueOf(startDate),Date.valueOf(LocalDate.parse(endDate).plusDays(1)),userService.getCurrentUser());
     }
-    private Event generateEventFromBody(Event event) {
+
+    @Override
+    public List<Event> getEventsEndDateCurrentUser(String endDate) {
+        return eventRepository.findAllByEventDateIsLessThanEqualAndOwner(Date.valueOf(LocalDate.parse(endDate).plusDays(1)),userService.getCurrentUser());
+
+    }
+
+    @Override
+    public List<Event> getEventsStartDateCurrentUser(String startDate) {
+        return eventRepository.findAllByEventDateIsGreaterThanAndOwner(Date.valueOf(startDate),userService.getCurrentUser());
+    }
+
+    private Event generateEventFromBody(com.projektpo.wiorektrepka.budget.dto.Event event) {
         Event m = new Event();
-        m.setEvName(event.getEvName());
+        m.setEvName(event.getName());
         m.setType(event.getType());
         m.setValue(event.getValue());
-        m.setCategory(event.getCategory());
-        m.setEventDate(Date.valueOf(event.getEventDate().toLocalDate().plusDays(1)));
+        m.setCategory(categoryRepository.findByName(event.getCategory()));
+        m.setEventDate(event.getEventDate());
         return m;
     }
 
@@ -59,7 +73,7 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public void updateEvent(Event event) {
-        Event e = eventRepository.findById(event.getMoneyId()).get();
+        Event e = eventRepository.findById(event.getId()).get();
         if (canEventEdit(e)) {
             e.setValue(event.getValue());
             e.setCategory(categoryRepository.getOne(event.getCategory().getCategoryId()));
@@ -77,7 +91,7 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public Integer countEventsBetweenDateCurrentUser(String startDate, String endDate) {
-        return eventRepository.countEventsByEventDateBetweenAndOwner(Date.valueOf(startDate),Date.valueOf(endDate),userService.getCurrentUser());
+        return eventRepository.countEventsByEventDateBetweenAndOwner(Date.valueOf(startDate),Date.valueOf(LocalDate.parse(endDate).plusDays(1)),userService.getCurrentUser());
     }
 
 

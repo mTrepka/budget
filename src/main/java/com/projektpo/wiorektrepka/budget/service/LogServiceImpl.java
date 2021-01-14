@@ -36,9 +36,7 @@ public class LogServiceImpl implements LogService {
 			log.setUser(((User) principal).getUsername());
 			log.setType(Type.login);
 		} catch (Exception e) {
-			com.projektpo.wiorektrepka.budget.security.oauth2.user.UserPrincipal u = ((com.projektpo.wiorektrepka.budget.security.oauth2.user.UserPrincipal) principal);
-			log.setUser(userService.findUserByEmail(u.getEmail()).getUsername());
-			log.setType(Type.social);
+			e.printStackTrace();
 		}
 		log.setIp(remoteAddr);
 		return log;

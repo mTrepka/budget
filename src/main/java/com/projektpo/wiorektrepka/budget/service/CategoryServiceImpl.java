@@ -16,31 +16,9 @@ public class CategoryServiceImpl implements CategoryService{
     @Override
     public List<Category> getAll() {
         List<Category> categories = categoryRepository.findAll();
-        categories.forEach(e -> e.getEventList().forEach(b->
-            {
-                b.setOwner(null);
-                b.setCategory(null);
-            })
-        );
         return categories;
     }
 
-
-
-    @Override
-    public void addNewCategory(Category category) {
-        categoryRepository.save(category);
-    }
-
-    @Override
-    public void deleteCategory(int categoryId) {
-        Optional<Category> c = categoryRepository.findById(categoryId);
-
-        if (checkCategory(c, categoryId))
-            if(c.get().getEventList()!=null && c.get().getEventList().size()==0)
-            categoryRepository.deleteById(categoryId);
-
-    }
 
     @Override
     public void editCategory(int categoryId, Category category) {
@@ -61,10 +39,6 @@ public class CategoryServiceImpl implements CategoryService{
     @Override
     public Category getById(Integer id) {
         Category c = categoryRepository.findById(id).get();
-        c.getEventList().forEach(e -> {
-            e.setCategory(null);
-            e.setOwner(null);
-        });
         return c;
     }
 

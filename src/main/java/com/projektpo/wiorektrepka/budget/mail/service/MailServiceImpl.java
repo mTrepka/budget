@@ -29,21 +29,21 @@ public class MailServiceImpl implements MailService {
 
 	@Override
 	public void sendForgotPasswordByEmail(User u, String code) {
-		SimpleMailMessage message = MailTemplate.builder()
-				.setTemplate(mailTemplateService.getTemplateByName("forgotPassword"))
-				.setUser(u)
-				.setUrl(UrlUtil.APP_URL + UrlUtil.FORGOTTEN_PASSWORD + "?code=" + code + "&id=" + u.getUserId())
-				.get();
-		mailSender.send(message);
+//		SimpleMailMessage message = MailTemplate.builder()
+//				.setTemplate(mailTemplateService.getTemplateByName("forgotPassword"))
+//				.setUser(u)
+//				.setUrl(UrlUtil.APP_URL + UrlUtil.FORGOTTEN_PASSWORD + "?code=" + code + "&id=" + u.getUserId())
+//				.get();
+//		mailSender.send(message);
 	}
 
 	@Override
 	public void sendWelcomeEmail(User u) {
-		SimpleMailMessage message = MailTemplate.builder()
-				.setTemplate(mailTemplateService.getTemplateByName("welcome"))
-				.setUser(u)
-				.setUrl(UrlUtil.APP_URL + UrlUtil.WELCOME_URL)
-				.get();
-		mailSender.send(message);
+//		SimpleMailMessage message = MailTemplate.builder()
+//				.setTemplate(mailTemplateService.getTemplateByName("welcome"))
+//				.setUser(u)
+//				.setUrl(UrlUtil.APP_URL + UrlUtil.WELCOME_URL)
+//				.get();
+//		mailSender.send(message);
 	}
 }

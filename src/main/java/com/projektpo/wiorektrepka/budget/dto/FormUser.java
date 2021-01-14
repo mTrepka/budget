@@ -1,4 +1,4 @@
-package com.projektpo.wiorektrepka.budget.domain;
+package com.projektpo.wiorektrepka.budget.dto;
 
 import lombok.Data;
 
