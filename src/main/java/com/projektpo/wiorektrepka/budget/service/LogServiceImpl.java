@@ -27,7 +27,7 @@ public class LogServiceImpl implements LogService {
 	public void logSuccessUserAuthentication(String remoteAddr, Object principal) {
 		AuthorizationLog log = generateLog(remoteAddr, principal);
 		log.setSuccess(true);
-		authorizationLogRepository.save(log);
+//		authorizationLogRepository.save(log);
 	}
 
 	private AuthorizationLog generateLog(String remoteAddr, Object principal) {
