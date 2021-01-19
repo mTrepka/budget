@@ -1,10 +1,10 @@
 insert into role(role_id,role) values (1,'user');
 
-insert into user(user_id,email,password,surname,u_name,username) values (1,'example@email.pl','password','Surname','Name','UserName');
-insert into user(user_id,email,password,surname,u_name,username) values (2,'example2@email.pl','password','Surname2','Name2','UserName2');
-insert into user(user_id,email,password,surname,u_name,username) values (3,'example3@email.pl','password','Surname3','Name3','UserName3');
-insert into user(user_id,email,password,surname,u_name,username) values (4,'example4@email.pl','password','Surname4','Name4','UserName4');
-insert into user(user_id,email,password,surname,u_name,username) values (5,'example5@email.pl','password','Surname5','Name5','UserName5');
+    insert into user(user_id,email,password,surname,u_name,username) values (1,'example@email.pl','$2a$10$ONbxjPCAAgRsqEnE.qEWK.wGlqHJnJ5TfsKDtpoOP6/SkZtxwVqda','Surname','Name','UserName');
+insert into user(user_id,email,password,surname,u_name,username) values (2,'example2@email.pl','$2a$10$ONbxjPCAAgRsqEnE.qEWK.wGlqHJnJ5TfsKDtpoOP6/SkZtxwVqda','Surname2','Name2','UserName2');
+insert into user(user_id,email,password,surname,u_name,username) values (3,'example3@email.pl','$2a$10$ONbxjPCAAgRsqEnE.qEWK.wGlqHJnJ5TfsKDtpoOP6/SkZtxwVqda','Surname3','Name3','UserName3');
+insert into user(user_id,email,password,surname,u_name,username) values (4,'example4@email.pl','$2a$10$ONbxjPCAAgRsqEnE.qEWK.wGlqHJnJ5TfsKDtpoOP6/SkZtxwVqda','Surname4','Name4','UserName4');
+insert into user(user_id,email,password,surname,u_name,username) values (5,'example5@email.pl','$2a$10$ONbxjPCAAgRsqEnE.qEWK.wGlqHJnJ5TfsKDtpoOP6/SkZtxwVqda','Surname5','Name5','UserName5');
 
 insert into user_role(user_id,role_id) values (1,1);
 insert into user_role(user_id,role_id) values (2,1);

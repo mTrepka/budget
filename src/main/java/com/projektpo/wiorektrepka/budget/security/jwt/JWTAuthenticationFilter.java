@@ -25,6 +25,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 	public Authentication attemptAuthentication(HttpServletRequest req,
 	                                            HttpServletResponse res) throws AuthenticationException {
 		try {
+			System.out.println(req.getInputStream());
 			User creds = new ObjectMapper().readValue(req.getInputStream(), User.class);
 			return authenticationManager.authenticate(
 					new UsernamePasswordAuthenticationToken(
